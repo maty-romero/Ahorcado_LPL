@@ -39,8 +39,8 @@ class Palabra extends Model
         parent::boot();
 
         static::creating(function ($palabra) {
-            $minLength = $palabra->dificultad->LongitudMinima;
-            $maxLength = $palabra->dificultad->LongitudMaxima;
+            $minLength = $palabra->dificultad->longitud_minima;
+            $maxLength = $palabra->dificultad->longitud_maxima;
 
             if (strlen($palabra->palabra) < $minLength || strlen($palabra->palabra) > $maxLength) {
                 // Lanza una excepción o maneja el error según tus necesidades
