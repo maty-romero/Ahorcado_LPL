@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Observers\PalabraObserver;
 use Illuminate\Support\ServiceProvider;
+use App\Models\Palabra; 
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Palabra::observe(PalabraObserver::class);
     }
 }

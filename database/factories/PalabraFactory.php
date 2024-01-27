@@ -22,14 +22,16 @@ $table->id();
             $table->timestamps();
             $table->foreign('dificultad')->references('id')->on('dificultad');
     */
-    static $dificultad = [1,2,3]; 
-    static $palabras = ['perro', 'alfabeto', 'botella', 'gato', 'termonuclear', 'escalofriante']; 
+    
 
     public function definition(): array
     {
+        //static $dificultad = [1,2,3]; 
+        static $palabras = ['perro', 'alfabeto', 'botella', 'gato', 'termonuclear', 'escalofriante']; 
+
         return [
-            'palabra' => $this->palabras[array_rand($this->palabras)],
-            'dificultad' => Dificultad::inRandomOrder()->first()->id
+            'palabra' => $palabras[array_rand($palabras)],
+            'dificultad_id' => Dificultad::inRandomOrder()->first()->id
         ];
     }
 }

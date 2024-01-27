@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('palabra', function (Blueprint $table) {
             $table->id();
             $table->string('palabra');
-            $table->unsignedBigInteger('dificultad'); 
+            $table->unsignedBigInteger('dificultad_id'); 
             $table->timestamps();
-            $table->foreign('dificultad')->references('id')->on('dificultad');
+            
+            $table->foreign('dificultad_id')->references('id')->on('dificultad');
         });
     }
 

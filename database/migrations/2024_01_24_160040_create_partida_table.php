@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->enum('estado', ['victoria', 'interrumpida', 'derrota']);  
             $table->integer('oportunidades_restantes')->default(10);  
-            $table->string('letras_ingresadas'); //acertadas y falladas
+            $table->string('letras_ingresadas')->default(''); //acertadas y falladas
             $table->time('tiempo_jugado'); // modificar formato en Model
-            $table->unsignedBigInteger('palabra'); 
+            $table->unsignedBigInteger('palabra_id'); 
             $table->timestamps(); //fecha creacion
-            $table->foreign('palabra')->references('id')->on('palabra'); 
+            $table->foreign('palabra_id')->references('id')->on('palabra'); 
         });
     }
 

@@ -25,15 +25,19 @@ class PartidaFactory extends Factory
             $table->timestamps(); //fecha creacion
             $table->foreign('palabra')->references('id')->on('palabra'); 
     */
-    static $estados = ['victoria', 'interrumpida', 'derrota'];  
-    static $palabras = [1,2,3,4,5,6,7]; 
+    
     public function definition(): array
     {
+        static $estados = ['victoria', 'interrumpida', 'derrota'];  
+        static $palabras = [1,2,3,4,5,6,7]; 
+
+        //substr(str_shuffle(str_repeat("abcdefghijklmnopqrstuvwxyz", 4)), 0, 5)
+
         return [
-            'estado' => substr(str_shuffle(str_repeat("abcdefghijklmnopqrstuvwxyz", 4)), 0, 5),
+            'estado' => $estados[array_rand($estados)],
             'oportunidades_restantes' => rand(0, 10),
             'tiempo_jugado' => sprintf('%02d:%02d', mt_rand(0, 59), mt_rand(0, 59)),
-            'palabra' => $this->palabras[array_rand($this->palabras)],
+            'palabra_id' => $palabras[array_rand($palabras)],
         ];
     }
 }

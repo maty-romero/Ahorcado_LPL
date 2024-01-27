@@ -17,7 +17,7 @@ class Dificultad extends Model
             $table->integer('longitud_maxima');
             $table->timestamps();
     */
-
+    protected $table = 'dificultad';
     protected $fillable = [
         'nombre_dificultad',
         'longitud_minima',

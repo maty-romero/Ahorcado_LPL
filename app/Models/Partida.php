@@ -19,13 +19,13 @@ class Partida extends Model
             $table->timestamps(); //fecha creacion
             $table->foreign('palabra')->references('id')->on('palabra'); 
     */
-
+    protected $table = 'partida';
     protected $fillable = [
         'estado',
         'oportunidades_restantes',
         'letras_ingresadas',
         'tiempo_jugado',
-        'palabra'
+        'palabra_id'
     ];
 
     public function palabra(): BelongsTo
