@@ -44,10 +44,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function partidas(): BelongsToMany
+    public function partidas()
     {
-        return $this->belongsToMany(Partida::class);
+        return $this->belongsToMany(Partida::class, 'user_partida', 'user_id', 'partida_id');
     }
+
 
     public function getEstadisticas()
     {

@@ -34,8 +34,9 @@ class Partida extends Model
         return $this->belongsTo(Palabra::class);
     }
 
-    public function usuarios(): BelongsToMany
+    public function usuarios()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'user_partida', 'partida_id', 'user_id');
     }
+
 }
