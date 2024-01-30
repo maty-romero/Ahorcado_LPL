@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo; 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Partida extends Model
 {
     use HasFactory;
@@ -31,5 +32,10 @@ class Partida extends Model
     public function palabra(): BelongsTo
     {
         return $this->belongsTo(Palabra::class);
+    }
+
+    public function usuarios(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
     }
 }

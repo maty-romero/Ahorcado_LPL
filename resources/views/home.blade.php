@@ -1,11 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+
+<!-- Coloca esta etiqueta antes de la etiqueta de cierre </body> -->
+<script src="resources/js/home.js"></script>
+
+{{--
+<div class="container" id="loginCard">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+                <div class="card-header">{{ __('') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,20 +19,21 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    {{ __('Haz iniciado sesion!') }}
                      
                 </div>
             </div>
         </div>
     </div>
 </div>
+--}}
 
 <div class="container-fluid">
     <div class="row justify-content-center mt-4">
         <div class="col-md-4 mb-4">
             <div class="bg-secondary text-light p-4">
                 <!-- Contenido del primer div -->
-                <h1>Mensaje Bienvenidia</h1>
+                <h1>Bienvenido!</h1>
                 <p>Ultimo Juego: </p>
                 <p>Resultado del juego: </p>
             </div>
@@ -52,7 +58,13 @@
 </div>
 
 
-
+<style>
+    /* Define la clase para ocultar el card */
+    .hide {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out; /* Añade una transición suave para una animación de desvanecimiento */
+    }
+</style>
 
 
 

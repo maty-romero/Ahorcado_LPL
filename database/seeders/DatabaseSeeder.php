@@ -7,7 +7,8 @@ use Illuminate\Database\Seeder;
 use App\Models\Palabra;
 use App\Models\Dificultad; 
 use App\Models\Partida;
-use App\Models\User; 
+use App\Models\User;
+use App\Models\UserPartida;
 use Illuminate\Support\Facades\Hash; 
 class DatabaseSeeder extends Seeder
 {
@@ -32,9 +33,9 @@ class DatabaseSeeder extends Seeder
             'pais_recidencia' => 'Argentina'
         ]);
 
-        User::factory(3)->create();
+        User::factory(12)->create();
         Palabra::factory(10)->create();
-        Partida::factory(5)->create();
-        
+        Partida::factory(10)->create();
+        UserPartida::factory(10)->create();
     }
 }
