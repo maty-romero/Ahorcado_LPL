@@ -18,32 +18,35 @@ class PartidaController extends Controller
         return view('juego', ['partida' => $partida]);
     }
 
-    // True: caracter presente en $palabra; False: no esta presente
-    public function evaluaLetra(string $palabra, string $caracter): string
+    public function evaluaLetra(Request $request): string
     {
+        $palabra = strtolower($request->input('palabra'));
+        $caracter = strtolower($request->input('caracter')); 
         $resultado = false;
         $mensaje = '';
+        $letras_ingresadas_format = str_replace([' ', ','], '', session('partida')->letras_ingresadas);
 
-        if (!ctype_alpha($caracter)) {
-            // caracter es una letra
-            $mensaje = 'El carácter ingresado no es una letra. Reingresa nuevamente!';
+        // Convertir el carácter ingresado a UTF-8
+        $caracterUtf8 = mb_convert_encoding($caracter, 'UTF-8', mb_detect_encoding($caracter));
+
+        if (strlen($caracterUtf8) > 1 || !ctype_alpha($caracterUtf8)) {
+            // El carácter ingresado no es una letra alfabética o es una tecla de control
+            $mensaje = 'El carácter ingresado no es válido. Reingresa nuevamente!';
+        } elseif (strpos($letras_ingresadas_format, $caracter) !== false) {
+            $mensaje = 'Ya has ingresado esa letra. Ingresa otra!';
         } else {
-            $palabra = strtolower($palabra);
-            $caracter = strtolower($caracter);
-
+            // El carácter ingresado es una letra alfabética y no ha sido ingresado antes
             $resultado = strpos($palabra, $caracter) !== false;
-            if ($resultado) {
-                $mensaje = "El carácter '$caracter' está presente en la palabra. Bien hecho!";
-            } else {
-                $mensaje = "El carácter '$caracter' no está presente en la palabra. Sigue participando!";
-            }
+            $mensaje = $resultado ? "El carácter '$caracter' está presente en la palabra. Bien hecho!" : "El carácter '$caracter' no está presente en la palabra. Sigue participando!";
+            session('partida')->letras_ingresadas .= ",$caracter"; 
         }
+
 
         $response = [
             'resultado' => $resultado,
-            'mensaje' => $mensaje
+            'mensaje' => $mensaje,
+            'letras_ingresadas' => session('partida')->letras_ingresadas
         ];
-
         return json_encode($response);
     }
 

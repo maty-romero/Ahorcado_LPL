@@ -6,15 +6,22 @@ botonIngresarLetra.addEventListener('click', async () => {
     try {
         // Esperar la pulsación de una tecla
         const teclaPresionada = await esperarTecla();
-        const palabraJuego = "{{ $partida->palabra->palabra }}";
+        const palabraJuego = document.getElementById('palabraJuego').value;
+        console.log("Palabra: " + palabraJuego +"\nCaracter: " + teclaPresionada);
         // Peticion Ajax con Axios 
         const respuesta = await axios.post('/evaluarLetra', {
             palabra: palabraJuego, 
-            tecla: teclaPresionada
+            caracter: teclaPresionada
         });
 
         // Manejar la respuesta
-        console.log(respuesta);
+        console.log(respuesta.data);
+        let msjPartida = document.getElementById('idMsjPartida'); 
+        msjPartida.textContent = ""; 
+        msjPartida.textContent = respuesta.data.mensaje;
+
+        document.getElementById('spanLetrasIngresadas').textContent = respuesta.data.letras_ingresadas; 
+
     } catch (error) {
         console.error('Error al realizar la petición:', error);
     }
