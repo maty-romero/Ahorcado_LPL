@@ -4,7 +4,6 @@
 
 @vite('resources/js/ingresoLetra.js')
 
-{{dump(session('partida')->letras_ingresadas)}}
 
 @php
     if (!session()->has('partida')) {
@@ -14,13 +13,12 @@
     if (!session()->has('aciertos')) {
         session()->put('aciertos', 0);
     }
+
+    dump(session('partida')); 
 @endphp
 
-
 <div class="container mt-5">
-    @php
-        echo $partida->palabra->palabra;   
-    @endphp
+    
     
     <input type="hidden" id="palabraJuego" value="{{ $partida->palabra->palabra }}">
 
@@ -30,7 +28,7 @@
             <span class="font-weight-bold text-dark" style="font-size: 1.8em;">Tiempo jugado:</span> 
             <span id="tiempo-jugado" class="font-weight-bold text-dark" style="font-size: 1.8em;">{{session('partida')->tiempo_jugado}}</span>
         </div>
-        <div class="font-weight-bold text-dark" style="font-size: 1.8em;">
+        <div id="idOportunidadesRestantes" class="font-weight-bold text-dark" style="font-size: 1.8em;">
             Oportunidades restantes: {{session('partida')->oportunidades_restantes}}
         </div>
     </div>
@@ -47,25 +45,39 @@
             </div>
             <div class="border-top border-warning">
                 <span class="font-weight-bold text-warning" style="font-size: 1.8em;">Letras de la palabra:</span>
-                <p class="font-weight-bold text-warning mt-2" style="font-size: 3.0em;" id="idLetrasPalabra">
-                    @for ($i = 0; $i < strlen(session('partida')->palabra->palabra); $i++)
-                        _
-                    @endfor
+                
+                @php
+                    $palabra = session('partida')->palabra->palabra;
+                    $letrasIngresadas = explode(',', session('partida')->letras_ingresadas);
+                @endphp
+
+                <p id='idPalabraEnmascarada' class="font-weight-bold text-warning mt-2" style="font-size: 3.0em;" id="idLetrasPalabra">
+                    @foreach (str_split($palabra) as $letra)
+                        @if (in_array($letra, $letrasIngresadas))
+                            {{ $letra }}
+                        @else
+                            _
+                        @endif
+                    @endforeach
                 </p>
             </div>
         </div>
     </div>
     
     <div class="mt-3 mb-4 text-center pt-3 border border-info">
-        <span class="font-weight-bold text-dark" style="font-size: 1.8em;">Letras ingresadas:</span> 
-        <span id="spanLetrasIngresadas" class="text-success" style="font-size: 1.8em;">{{session('partida')->letras_ingresadas}}</span>
+        <span class="font-weight-bold text-dark" style="font-size: 1.8em;">Letras no acertadas:</span> 
+        @php
+            $letrasNoAcertadas = session('partida')->palabra->getLetrasNoAcertadas($palabra, session('partida')->letras_ingresadas);
+        @endphp
+
+        <span id="spanLetrasNoAcertadas" class="text-success" style="font-size: 1.8em;">{{$letrasNoAcertadas}}</span>
     </div>
 
     <div class="text-center pt-3">
-        <a id="ingresarLetra" class="btn btn-primary mr-2" style="font-size: 1.8em;">Ingresar una letra</a>
-        <a href="#" class="btn btn-primary mr-2" style="font-size: 1.8em;">Arriesgar una palabra</a>
-        <a href="#" class="btn btn-danger mr-2" style="font-size: 1.8em;">Rendirse</a>
-        <a href="#" class="btn btn-warning" style="font-size: 1.8em;">Interrumpir juego</a>
+        <button id="btnIngresarLetra" class="btn btn-primary mr-2" style="font-size: 1.8em;">Ingresar una letra</button>
+        <button id="btnArriesgar" class="btn btn-primary mr-2" style="font-size: 1.8em;">Arriesgar una palabra</button>
+        <button id="btnRendirse" class="btn btn-danger mr-2" style="font-size: 1.8em;">Rendirse</button>
+        <button id="btnInterrumpir" class="btn btn-warning" style="font-size: 1.8em;">Interrumpir juego</button>
     </div>
 </div>
 

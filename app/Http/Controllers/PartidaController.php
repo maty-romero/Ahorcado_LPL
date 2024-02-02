@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Partida; 
 use Illuminate\Support\Facades\Auth; 
+use App\Models\Palabra;
+use Barryvdh\Debugbar\LaravelDebugbar;
 
 class PartidaController extends Controller
 {
@@ -18,36 +20,23 @@ class PartidaController extends Controller
         return view('juego', ['partida' => $partida]);
     }
 
-    public function evaluaLetra(Request $request): string
+    public function evaluaLetra(Request $request)
     {
         $palabra = strtolower($request->input('palabra'));
-        $caracter = strtolower($request->input('caracter')); 
-        $resultado = false;
-        $mensaje = '';
-        $letras_ingresadas_format = str_replace([' ', ','], '', session('partida')->letras_ingresadas);
+        $caracter = strtolower($request->input('caracter'));
 
-        // Convertir el carácter ingresado a UTF-8
-        $caracterUtf8 = mb_convert_encoding($caracter, 'UTF-8', mb_detect_encoding($caracter));
+        $resultado = Palabra::evaluarLetra($palabra, $caracter);
+        if(!$resultado['victoria']) // quedan oportunidades restantes 
+        {
+            if(Palabra::verificarVictoria($palabra, $resultado['letras_ingresadas']))
+            {
+                $resultado['victoria'] = true; 
+            }else{
+                $resultado['letras_incorrectas'] = Palabra::getLetrasNoAcertadas($palabra, $resultado['letras_ingresadas']);    
+            }
 
-        if (strlen($caracterUtf8) > 1 || !ctype_alpha($caracterUtf8)) {
-            // El carácter ingresado no es una letra alfabética o es una tecla de control
-            $mensaje = 'El carácter ingresado no es válido. Reingresa nuevamente!';
-        } elseif (strpos($letras_ingresadas_format, $caracter) !== false) {
-            $mensaje = 'Ya has ingresado esa letra. Ingresa otra!';
-        } else {
-            // El carácter ingresado es una letra alfabética y no ha sido ingresado antes
-            $resultado = strpos($palabra, $caracter) !== false;
-            $mensaje = $resultado ? "El carácter '$caracter' está presente en la palabra. Bien hecho!" : "El carácter '$caracter' no está presente en la palabra. Sigue participando!";
-            session('partida')->letras_ingresadas .= ",$caracter"; 
         }
-
-
-        $response = [
-            'resultado' => $resultado,
-            'mensaje' => $mensaje,
-            'letras_ingresadas' => session('partida')->letras_ingresadas
-        ];
-        return json_encode($response);
+        return response()->json($resultado);
     }
 
 }

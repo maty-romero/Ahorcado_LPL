@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-
+    @php
+        session()->flush();
+    @endphp
     <h1 class="text-center">Juegos interrumpidos</h1>
 
     <div class="container">
@@ -9,7 +11,6 @@
             <div class="d-flex justify-content-end mb-3">
                 <a href="#" class="btn btn-warning">Eliminar juegos interrumpidos</a>
             </div>
-
 
             <table class="table text-center">
                 <thead class="thead-dark">
@@ -36,9 +37,6 @@
         @else
             <h4 class="mt-4 bold">No hay partidas sin concluir</h4>
         @endif
-
-
     </div>
-
 
 @endsection
