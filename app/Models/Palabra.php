@@ -10,14 +10,7 @@ use Illuminate\Support\Facades\Log;
 class Palabra extends Model
 {
     use HasFactory;
-
-    /*
-            $table->id();
-            $table->string('palabra');
-            $table->unsignedBigInteger('dificultad'); 
-            $table->timestamps();
-            $table->foreign('dificultad')->references('id')->on('dificultad');  
-    */
+    
     protected $table = 'palabra';
     protected $fillable = [
         'palabra',

@@ -6,7 +6,6 @@ const btnRendirse = document.getElementById('btnRendirse');
 const btnInterrumpir = document.getElementById('btnInterrumpir');
 const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-// Función para deshabilitar los botones
 function deshabilitarBotones() {
     btnIngresarLetra.disabled = true;
     btnArriesgar.disabled = true;
@@ -14,7 +13,6 @@ function deshabilitarBotones() {
     btnInterrumpir.disabled = true;
 }
 
-// Función para habilitar los botones
 function habilitarBotones() {
     btnIngresarLetra.disabled = false;
     btnArriesgar.disabled = false;
@@ -52,16 +50,15 @@ btnIngresarLetra.addEventListener('click', async () => {
         msjPartida.textContent = ""; 
         msjPartida.textContent = respuesta.data.mensaje;
 
-        document.getElementById('spanLetrasNoAcertadas').textContent = respuesta.data.letras_incorrectas; 
+        document.getElementById('spanLetrasNoAcertadas').textContent = respuesta.data.letras_incorrectas;
         document.getElementById('idOportunidadesRestantes').textContent = respuesta.data.oportunidades; 
-
-        actualizarPalabraEnmascarada(palabraJuego, respuesta.data.letras_ingresadas)
 
         if(respuesta.data.victoria)
         {
             console.log("GANASTE!!! -- Accionar Modal resultado");
         }
 
+        actualizarPalabraEnmascarada(palabraJuego, respuesta.data.letras_ingresadas)
         habilitarBotones();
 
     } catch (error) {
@@ -73,7 +70,6 @@ btnIngresarLetra.addEventListener('click', async () => {
 // Función para esperar la pulsación de una tecla
 function esperarTecla() {
     return new Promise(resolve => {
-        
         document.addEventListener('keydown', function(event) {
             const tecla = event.key;  // Obtener carácter de la tecla presionada
             // Resolver la promesa con la tecla presionada

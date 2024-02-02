@@ -2,6 +2,7 @@
 
 @section('content')
 
+@vite('resources/js/cronometro.js')
 @vite('resources/js/ingresoLetra.js')
 
 
@@ -9,27 +10,24 @@
     if (!session()->has('partida')) {
         session()->put('partida', $partida);
     }
-
-    if (!session()->has('aciertos')) {
-        session()->put('aciertos', 0);
-    }
-
     dump(session('partida')); 
 @endphp
 
 <div class="container mt-5">
     
-    
-    <input type="hidden" id="palabraJuego" value="{{ $partida->palabra->palabra }}">
-
-
     <div class="d-flex justify-content-between mb-4">
         <div>
             <span class="font-weight-bold text-dark" style="font-size: 1.8em;">Tiempo jugado:</span> 
-            <span id="tiempo-jugado" class="font-weight-bold text-dark" style="font-size: 1.8em;">{{session('partida')->tiempo_jugado}}</span>
+            <span id="tiempoJugado" class="font-weight-bold text-dark" style="font-size: 1.8em;">
+                {{session('partida')->tiempo_jugado}}
+            </span>
         </div>
-        <div id="idOportunidadesRestantes" class="font-weight-bold text-dark" style="font-size: 1.8em;">
-            Oportunidades restantes: {{session('partida')->oportunidades_restantes}}
+        <div>
+            <span class="font-weight-bold text-dark" style="font-size: 1.8em;">Oportunidades restantes:</span> 
+            <span id="idOportunidadesRestantes" class="font-weight-bold text-dark" style="font-size: 1.8em;">
+                {{session('partida')->oportunidades_restantes}}
+            </span>
+             
         </div>
     </div>
 
@@ -45,7 +43,6 @@
             </div>
             <div class="border-top border-warning">
                 <span class="font-weight-bold text-warning" style="font-size: 1.8em;">Letras de la palabra:</span>
-                
                 @php
                     $palabra = session('partida')->palabra->palabra;
                     $letrasIngresadas = explode(',', session('partida')->letras_ingresadas);
@@ -63,14 +60,16 @@
             </div>
         </div>
     </div>
-    
+    <input type="hidden" id="palabraJuego" value="{{ $partida->palabra->palabra }}">
+    <input type="hidden" id="tiempoJugadoInicial" value="{{ $partida->tiempo_jugado }}">
     <div class="mt-3 mb-4 text-center pt-3 border border-info">
         <span class="font-weight-bold text-dark" style="font-size: 1.8em;">Letras no acertadas:</span> 
         @php
             $letrasNoAcertadas = session('partida')->palabra->getLetrasNoAcertadas($palabra, session('partida')->letras_ingresadas);
         @endphp
-
-        <span id="spanLetrasNoAcertadas" class="text-success" style="font-size: 1.8em;">{{$letrasNoAcertadas}}</span>
+        <span id="spanLetrasNoAcertadas" class="text-success" style="font-size: 1.8em;">
+            {{$letrasNoAcertadas}}
+        </span>
     </div>
 
     <div class="text-center pt-3">
@@ -80,11 +79,5 @@
         <button id="btnInterrumpir" class="btn btn-warning" style="font-size: 1.8em;">Interrumpir juego</button>
     </div>
 </div>
-
-
-
-
-
-
 
 @endsection

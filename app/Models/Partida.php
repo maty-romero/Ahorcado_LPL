@@ -39,4 +39,11 @@ class Partida extends Model
         return $this->belongsToMany(User::class, 'user_partida', 'partida_id', 'user_id');
     }
 
+    // transforma el tiempo en segundos para utilizar el cronometro 
+    public static function getTiempoPartidaCronometro(string $tiempoJugado) : int
+    {
+        list($horas, $minutos, $segundos) = explode(':', $tiempoJugado);
+        $tiempoTotalSegundos = $horas * 3600 + $minutos * 60 + $segundos; 
+        return $tiempoTotalSegundos; 
+    }
 }
