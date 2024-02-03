@@ -46,4 +46,22 @@ class Partida extends Model
         $tiempoTotalSegundos = $horas * 3600 + $minutos * 60 + $segundos; 
         return $tiempoTotalSegundos; 
     }
+    public static function getNuevoTiempoJugado($tiempoInicio, $tiempoFin, $tiempoTotalAnterior = 0) {
+        $diferenciaTiempo = $tiempoFin - $tiempoInicio; // tiempo en segundos 
+        $tiempoTotalNuevo = $tiempoTotalAnterior + $diferenciaTiempo;
+        $tiempoTotalFormateado = gmdate('H:i:s', $tiempoTotalNuevo);
+        return $tiempoTotalFormateado;
+    }
+
+    public function actualizarPartida(Partida $partida)
+    {
+        $this->estado = $partida->estado;
+        $this->oportunidades_restantes = $partida->oportunidades_restantes;
+        $this->letras_ingresadas = $partida->letras_ingresadas;
+        $this->tiempo_jugado = $partida->tiempo_jugado;
+        $this->palabra_id = $partida->palabra_id;
+
+        return $this->save();
+    }
+
 }

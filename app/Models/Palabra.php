@@ -29,7 +29,7 @@ class Palabra extends Model
 
     public static function evaluarLetra($palabra, $caracter)
     {
-        $victoria = false;
+        //$victoria = false;
         $mensaje = '';
 
         $letrasIngresadas = session('partida')->letras_ingresadas; // sino tiene valor ''
@@ -49,18 +49,13 @@ class Palabra extends Model
                 $mensaje = "El carácter '$caracter' no está presente en la palabra. Sigue participando!";
                 // Decrementar las oportunidades restantes
                 session('partida')->oportunidades_restantes--; 
-                if (session('partida')->oportunidades_restantes <= 0) {
-                    $victoria = true;
-                }
             }
             // Agregar el carácter ingresado a las letras ingresadas en la sesión
             $letrasIngresadas .= ",".$caracter;
             session('partida')->letras_ingresadas = $letrasIngresadas; 
-            //session(['letras_ingresadas' => $letrasIngresadas]);
         }
 
-        return [
-            'victoria' => $victoria,
+        return [   
             'mensaje' => $mensaje,
             'letras_ingresadas' => session('partida')->letras_ingresadas,
             'oportunidades' => session('partida')->oportunidades_restantes

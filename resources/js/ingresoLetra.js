@@ -53,9 +53,9 @@ btnIngresarLetra.addEventListener('click', async () => {
         document.getElementById('spanLetrasNoAcertadas').textContent = respuesta.data.letras_incorrectas;
         document.getElementById('idOportunidadesRestantes').textContent = respuesta.data.oportunidades; 
 
-        if(respuesta.data.victoria)
+        if(respuesta.data.juegoTerminado)
         {
-            console.log("GANASTE!!! -- Accionar Modal resultado");
+            console.log("Ha terminado la partida!!! -- Accionar Modal resultado");
         }
 
         actualizarPalabraEnmascarada(palabraJuego, respuesta.data.letras_ingresadas)

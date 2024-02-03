@@ -10,6 +10,11 @@
     if (!session()->has('partida')) {
         session()->put('partida', $partida);
     }
+    if (!session()->has('hora_inicio_juego')) {
+        $tiempoInicio = time();
+        session()->put('hora_inicio_juego', $tiempoInicio);
+    }
+
     dump(session('partida')); 
 @endphp
 

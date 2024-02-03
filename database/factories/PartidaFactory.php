@@ -14,18 +14,6 @@ class PartidaFactory extends Factory
      *
      * @return array<string, mixed>
      */
-
-    /*
-    $table->id();
-            $table->enum('estado', ['victoria', 'interrumpida', 'derrota']);  
-            $table->integer('oportunidades_restantes')->default(10);  
-            $table->string('letras_ingresadas'); //acertadas y falladas
-            $table->timestamp('tiempo_jugado'); // modificar formato en Model
-            $table->unsignedBigInteger('palabra'); 
-            $table->timestamps(); //fecha creacion
-            $table->foreign('palabra')->references('id')->on('palabra'); 
-    */
-    
     public function definition(): array
     {
         static $estados = ['victoria', 'interrumpida', 'derrota'];  

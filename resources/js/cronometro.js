@@ -30,10 +30,12 @@ function iniciarCronometro(tiempoInicial) {
         // Construir el tiempo para mostrar
         const tiempoMostrar = `${horasMostrar}:${minutosMostrar}:${segundosMostrar}`;
 
-        // Mostrar el tiempo (puedes actualizar un elemento HTML en su lugar)
+        // Mostrar el tiempo 
         document.getElementById('tiempoJugado').textContent = "";
         document.getElementById('tiempoJugado').textContent = tiempoMostrar;
         
+        actualizarTiempoJugado(tiempoMostrar);
+
         console.log(tiempoMostrar);
 
 
