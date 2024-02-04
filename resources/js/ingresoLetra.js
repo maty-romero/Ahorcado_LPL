@@ -56,6 +56,7 @@ btnIngresarLetra.addEventListener('click', async () => {
         if(respuesta.data.juegoTerminado)
         {
             console.log("Ha terminado la partida!!! -- Accionar Modal resultado");
+            window.location.replace("/finalizarPartida");
         }
 
         actualizarPalabraEnmascarada(palabraJuego, respuesta.data.letras_ingresadas)

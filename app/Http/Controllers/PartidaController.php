@@ -66,7 +66,8 @@ class PartidaController extends Controller
         } 
         // se ha actualizado la partida con exito
 
-        // Redireccionar a pantalla mensaje 
+        // Redireccionar a pantalla mensaje
+        return View('resultado', ['partida' => $partida]); 
     }
     
 
