@@ -10,16 +10,6 @@ class Partida extends Model
 {
     use HasFactory;
 
-    /*
-            $table->id();
-            $table->enum('estado', ['victoria', 'interrumpida', 'derrota']);  
-            $table->integer('oportunidades_restantes')->default(10);  
-            $table->string('letras_ingresadas'); //acertadas y falladas
-            $table->timestamp('tiempo_jugado'); // modificar formato en Model
-            $table->unsignedBigInteger('palabra'); 
-            $table->timestamps(); //fecha creacion
-            $table->foreign('palabra')->references('id')->on('palabra'); 
-    */
     protected $table = 'partida';
     protected $fillable = [
         'estado',
@@ -53,7 +43,22 @@ class Partida extends Model
         return $tiempoTotalFormateado;
     }
 
-    public function actualizarPartida(Partida $partida)
+    public function guardarPartida($tiempoInicio, $tiempoFin)
+    {
+        $tiempoTotalAnterior = Partida::getTiempoPartidaCronometro($this->tiempo_jugado); // tiempo anterior jugado
+        // tiempo jugado hasta el momento
+        $tiempoTotalNuevo = Partida::getNuevoTiempoJugado($tiempoInicio, $tiempoFin, $tiempoTotalAnterior);
+        $this->tiempo_jugado = $tiempoTotalNuevo;
+
+        $actualizado = $this->actualizarPartida($this);
+
+        if (!$actualizado) {
+            // hubo un error al actualizar 
+            return;
+        } 
+    }
+
+    private function actualizarPartida(Partida $partida)
     {
         $this->estado = $partida->estado;
         $this->oportunidades_restantes = $partida->oportunidades_restantes;
@@ -63,5 +68,26 @@ class Partida extends Model
 
         return $this->save();
     }
+
+    /*
+        Ranking jugadores con tiempos insumidos en acertar palabras
+        Discriminado por dificultad elegida
+    */
+    public static function getRankingJugadoresRapidos(string $dificultad)
+    {
+        return Partida::where('estado', 'victoria')
+            ->with(['palabra.dificultad', 'usuarios' => function ($query) {
+                $query->select('name'); // Seleccionar solo el nombre del usuario
+            }])
+            ->whereHas('palabra.dificultad', function ($query) use ($dificultad) {
+                $query->where('nombre_dificultad', $dificultad);
+            })
+            ->orderBy('tiempo_jugado') 
+            ->take(5) 
+            ->get(['estado', 'tiempo_jugado', 'palabra_id']);
+    }
+
+
+
 
 }

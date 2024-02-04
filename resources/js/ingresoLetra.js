@@ -35,6 +35,7 @@ btnIngresarLetra.addEventListener('click', async () => {
         console.log("Palabra: " + palabraJuego +"\nCaracter: " + teclaPresionada);
         
         // Peticion Ajax con Axios, incluyendo el token CSRF en los datos
+         
         const respuesta = await axios.post('/evaluarLetra', {
             palabra: palabraJuego, 
             caracter: teclaPresionada
@@ -43,7 +44,13 @@ btnIngresarLetra.addEventListener('click', async () => {
                 'X-CSRF-TOKEN': token
             }
         });
-
+        /*
+       // Peticion Ajax con Axios sin incluir el token CSRF en los datos
+        const respuesta = await axios.post('/evaluarLetra', {
+            palabra: palabraJuego, 
+            caracter: teclaPresionada
+        });
+        */
         // Manejar la respuesta
         console.log(respuesta.data);
         

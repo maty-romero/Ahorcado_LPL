@@ -5,10 +5,10 @@
 @vite('resources/js/cronometro.js')
 @vite('resources/js/ingresoLetra.js')
 
-
 @php
     if (!session()->has('partida')) {
         session()->put('partida', $partida);
+        echo "Se ha asignado una nueva partida!";
     }
     if (!session()->has('hora_inicio_juego')) {
         $tiempoInicio = time();

@@ -49,7 +49,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Partida::class, 'user_partida', 'user_id', 'partida_id');
     }
 
-
     public function getEstadisticas()
     {
         

@@ -29,11 +29,9 @@ class Palabra extends Model
 
     public static function evaluarLetra($palabra, $caracter)
     {
-        //$victoria = false;
         $mensaje = '';
 
         $letrasIngresadas = session('partida')->letras_ingresadas; // sino tiene valor ''
-        Log::debug('Letras ingresadas method:evaluarLetra(session): ' . $letrasIngresadas);
         
         $caracterUtf8 = mb_convert_encoding($caracter, 'UTF-8', mb_detect_encoding($caracter));
 

@@ -34,8 +34,6 @@ function iniciarCronometro(tiempoInicial) {
         document.getElementById('tiempoJugado').textContent = "";
         document.getElementById('tiempoJugado').textContent = tiempoMostrar;
         
-        actualizarTiempoJugado(tiempoMostrar);
-
         console.log(tiempoMostrar);
 
 

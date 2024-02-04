@@ -17,6 +17,7 @@ class PartidaController extends Controller
     } 
     public function show(string $idPartida){
         $partida = Partida::findOrFail($idPartida);
+        session()->flush();
         return view('juego', ['partida' => $partida]);
     }
 
@@ -50,25 +51,30 @@ class PartidaController extends Controller
 
         if (!$partida) {
             return;
-        }
-
+        } 
         $tiempoInicio = session('hora_inicio_juego'); // comienzo partida
         $tiempoFin = time();
-        $tiempoTotalAnterior = $partida->tiempo_jugado; // tiempo anterior jugado
-        // tiempo jugado hasta el momento
-        $tiempoTotalNuevo = Partida::getNuevoTiempoJugado($tiempoInicio, $tiempoFin, $tiempoTotalAnterior);
-        $partida->tiempo_jugado = $tiempoTotalNuevo;
+        $partida->guardarPartida($tiempoInicio, $tiempoFin);
 
-        $actualizado = $partida->actualizarPartida($partida);
-
-        if (!$actualizado) {
-            // hubo un error al actualizar 
-        } 
-        // se ha actualizado la partida con exito
-
-        // Redireccionar a pantalla mensaje
-        return View('resultado', ['partida' => $partida]); 
+        $partidasRanking = [];
+        if($partida->estado = 'derrota')
+        {
+            $dificultadPartida = $partida->palabra->dificultad->nombre_dificultad; 
+            $partidasRanking = Partida::getRankingJugadoresRapidos($dificultadPartida);  
+        }
+        session()->flush(); 
+        return View('resultado', ['partida' => $partida, 'partidasRanking' => $partidasRanking]); 
     }
     
+    public function interrumpirPartida()
+    {
+        $partida = session('partida');
 
+        if (!$partida) {
+            return;
+        } 
+        $partida->estado = 'interrumpida'; 
+        session()->put('partida', $partida); 
+        $this->finalizarPartida();
+    }
 }
