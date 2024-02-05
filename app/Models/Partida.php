@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo; 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\DB;
 class Partida extends Model
 {
     use HasFactory;
@@ -73,21 +73,25 @@ class Partida extends Model
         Ranking jugadores con tiempos insumidos en acertar palabras
         Discriminado por dificultad elegida
     */
-    public static function getRankingJugadoresRapidos(string $dificultad)
+    public static function obtenerRankingPartidas($dificultad)
     {
-        return Partida::where('estado', 'victoria')
-            ->with(['palabra.dificultad', 'usuarios' => function ($query) {
-                $query->select('name'); // Seleccionar solo el nombre del usuario
+        // Obtener el ID de la dificultad
+        $idDificultad = DB::table('dificultad')->where('nombre_dificultad', $dificultad)->value('id');
+
+        // Realizar la consulta para obtener el ranking de las partidas
+        $rankingPartidas = Partida::with(['usuarios' => function ($query) {
+                $query->select('users.name');
             }])
-            ->whereHas('palabra.dificultad', function ($query) use ($dificultad) {
-                $query->where('nombre_dificultad', $dificultad);
+            ->select('id', 'tiempo_jugado') // Seleccionar el tiempo jugado desde el modelo Partida
+            ->where('estado', 'victoria')
+            ->whereHas('palabra', function ($query) use ($idDificultad) {
+                $query->where('dificultad_id', $idDificultad);
             })
-            ->orderBy('tiempo_jugado') 
-            ->take(5) 
-            ->get(['estado', 'tiempo_jugado', 'palabra_id']);
+            ->orderBy('tiempo_jugado')
+            ->limit(5)
+            ->get();
+
+        return $rankingPartidas;
     }
-
-
-
 
 }

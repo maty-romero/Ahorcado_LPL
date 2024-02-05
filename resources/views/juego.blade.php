@@ -77,12 +77,38 @@
         </span>
     </div>
 
+    {{--Modales--}}
+
+    <x-modal>
+        <x-slot name="idModal">modalRendirse</x-slot>
+        <x-slot name="titulo">Rendirse</x-slot>
+        
+        <p class="font-weight-bold" style="font-size: 1.5em;">¿Estas seguro de que deseas rendirte?</p>
+    
+        <x-slot name="rutaConfirmar">{{route('finPartidaRendicion')}}</x-slot>
+        <x-slot name="textBtnConfirmar">Rendirse</x-slot>
+    </x-modal>
+    
+    <x-modal>
+        <x-slot name="idModal">modalInterrumpir</x-slot>
+        <x-slot name="titulo">Interrumpir Partida</x-slot>
+        
+        <p class="font-weight-bold" style="font-size: 1.5em;">¿Estas seguro de que deseas interrumpir la partida?</p>
+        <p class="font-weight-bold" style="font-size: 1.5em;">No te preocupes! Podras continuarla en otro momento</p>
+    
+        <x-slot name="rutaConfirmar">{{route('finPartidaInterrumpcion')}}</x-slot>
+        <x-slot name="textBtnConfirmar">Interrumpir</x-slot>
+    </x-modal>
+
+
     <div class="text-center pt-3">
         <button id="btnIngresarLetra" class="btn btn-primary mr-2" style="font-size: 1.8em;">Ingresar una letra</button>
-        <button id="btnArriesgar" class="btn btn-primary mr-2" style="font-size: 1.8em;">Arriesgar una palabra</button>
-        <button id="btnRendirse" class="btn btn-danger mr-2" style="font-size: 1.8em;">Rendirse</button>
-        <button id="btnInterrumpir" class="btn btn-warning" style="font-size: 1.8em;">Interrumpir juego</button>
+        <button id="btnArriesgar" class="btn btn-primary mr-2"  style="font-size: 1.8em;">Arriesgar una palabra</button>
+        <button id="btnRendirse" class="btn btn-danger mr-2" data-bs-toggle="modal" data-bs-target="#modalRendirse" style="font-size: 1.8em;">Rendirse</button>
+        <button id="btnInterrumpir" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalInterrumpir" style="font-size: 1.8em;">Interrumpir juego</button>
     </div>
 </div>
+
+
 
 @endsection

@@ -24,7 +24,10 @@ Route::get('/interrumpidos', [PartidaController::class, 'index_interrumpidos'])-
 Route::get('/partida/{idPartida}', [PartidaController::class, 'show'])->name('show');
 
 Route::post('/evaluarLetra', [PartidaController::class, 'evaluaLetra'])->name('ingresoLetra');
-Route::get('/finalizarPartida', [PartidaController::class, 'finalizarPartida'])->name('finPartida');
+
+Route::post('/finalizarPartida', [PartidaController::class, 'finalizarPartida'])->name('finPartida');
+Route::post('/rendirsePartida', [PartidaController::class, 'rendirsePartida'])->name('finPartidaRendicion');
+Route::post('/interrumpirPartida', [PartidaController::class, 'interrumpirPartida'])->name('finPartidaInterrumpcion');
 
 
 //Logs 

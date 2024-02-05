@@ -7,7 +7,7 @@ use App\Models\Partida;
 use Illuminate\Support\Facades\Auth; 
 use App\Models\Palabra;
 use Barryvdh\Debugbar\LaravelDebugbar;
-
+use Illuminate\Support\Facades\Log;
 class PartidaController extends Controller
 {
     public function index_interrumpidos()
@@ -56,14 +56,21 @@ class PartidaController extends Controller
         $tiempoFin = time();
         $partida->guardarPartida($tiempoInicio, $tiempoFin);
 
+        session()->flush(); 
+
+        
         $partidasRanking = [];
         if($partida->estado = 'derrota')
         {
+            Log::info('Partida luego de guardar: ' .$partida);
             $dificultadPartida = $partida->palabra->dificultad->nombre_dificultad; 
-            $partidasRanking = Partida::getRankingJugadoresRapidos($dificultadPartida);  
+            $partidasRanking = Partida::obtenerRankingPartidas($dificultadPartida);
+            return View('resultado', ['partida' => $partida, 'partidasRanking' => $partidasRanking]);   
         }
-        session()->flush(); 
-        return View('resultado', ['partida' => $partida, 'partidasRanking' => $partidasRanking]); 
+        //partida interrumpida
+        return redirect()->route('home'); 
+        
+        
     }
     
     public function interrumpirPartida()
@@ -75,6 +82,18 @@ class PartidaController extends Controller
         } 
         $partida->estado = 'interrumpida'; 
         session()->put('partida', $partida); 
-        $this->finalizarPartida();
+        return redirect()->route('finPartida');
+    }
+    public function rendirsePartida()
+    {
+        $partida = session('partida');
+
+        if (!$partida) {
+            return;
+        } 
+        $partida->estado = 'derrota'; 
+        session()->put('partida', $partida); 
+        return redirect()->route('finPartida');
+         
     }
 }
