@@ -20,6 +20,12 @@ function habilitarBotones() {
     btnInterrumpir.disabled = false;
 }
 
+function finalizarPartidaFrm(nuevoEstado){
+    document.getElementById('nuevoEstado').value = nuevoEstado;
+    document.getElementById('formFinalizarPartida').submit();
+    //window.location.replace('/finalizarPartida' + nuevoEstado);
+}
+
 // Evento Btn Ingreso de letra 
 btnIngresarLetra.addEventListener('click', async () => {
 
@@ -44,13 +50,7 @@ btnIngresarLetra.addEventListener('click', async () => {
                 'X-CSRF-TOKEN': token
             }
         });
-        /*
-       // Peticion Ajax con Axios sin incluir el token CSRF en los datos
-        const respuesta = await axios.post('/evaluarLetra', {
-            palabra: palabraJuego, 
-            caracter: teclaPresionada
-        });
-        */
+        
         // Manejar la respuesta
         console.log(respuesta.data);
         
@@ -63,9 +63,10 @@ btnIngresarLetra.addEventListener('click', async () => {
         if(respuesta.data.juegoTerminado)
         {
             console.log("Ha terminado la partida!!! -- Accionar Modal resultado");
-            window.location.replace("/finalizarPartida");
+            let nuevoEstado = respuesta.data.estadoPartida;
+            finalizarPartidaFrm(nuevoEstado); 
         }
-
+        
         actualizarPalabraEnmascarada(palabraJuego, respuesta.data.letras_ingresadas)
         habilitarBotones();
 

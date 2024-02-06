@@ -5,6 +5,8 @@
 @vite('resources/js/cronometro.js')
 @vite('resources/js/ingresoLetra.js')
 
+
+
 @php
     if (!session()->has('partida')) {
         session()->put('partida', $partida);
@@ -78,14 +80,13 @@
     </div>
 
     {{--Modales--}}
-
     <x-modal>
         <x-slot name="idModal">modalRendirse</x-slot>
         <x-slot name="titulo">Rendirse</x-slot>
         
         <p class="font-weight-bold" style="font-size: 1.5em;">¿Estas seguro de que deseas rendirte?</p>
     
-        <x-slot name="rutaConfirmar">{{route('finPartidaRendicion')}}</x-slot>
+        <x-slot name="jsAction">finalizarPartidaFrm('derrota')</x-slot>
         <x-slot name="textBtnConfirmar">Rendirse</x-slot>
     </x-modal>
     
@@ -96,10 +97,16 @@
         <p class="font-weight-bold" style="font-size: 1.5em;">¿Estas seguro de que deseas interrumpir la partida?</p>
         <p class="font-weight-bold" style="font-size: 1.5em;">No te preocupes! Podras continuarla en otro momento</p>
     
-        <x-slot name="rutaConfirmar">{{route('finPartidaInterrumpcion')}}</x-slot>
-        <x-slot name="textBtnConfirmar">Interrumpir</x-slot>
+        <x-slot name="botonFooter">
+            <button id="btnInterrumpir" type="button" class="btn btn-info">Interrumpir</button>
+        </x-slot>
     </x-modal>
 
+    <script>
+        document.getElementById('btnInterrumpir').addEventListener('click', function() {
+            finalizarPartidaFrm('interrumpida');
+        });
+    </script>
 
     <div class="text-center pt-3">
         <button id="btnIngresarLetra" class="btn btn-primary mr-2" style="font-size: 1.8em;">Ingresar una letra</button>
@@ -109,6 +116,10 @@
     </div>
 </div>
 
+<form id="formFinalizarPartida" method="POST" action="{{ route('finPartida') }}">
+    @csrf
+    <input type="hidden" name="nuevoEstado" id="nuevoEstado">
+</form>
 
 
 @endsection

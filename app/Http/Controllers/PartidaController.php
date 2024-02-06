@@ -42,34 +42,41 @@ class PartidaController extends Controller
             $resultado['letras_incorrectas'] = Palabra::getLetrasNoAcertadas($palabra, $resultado['letras_ingresadas']);
         }
 
+        $resultado['estadoPartida'] = session('partida')->estado; 
         return response()->json($resultado);
     }
 
-    public function finalizarPartida()
+    public function finalizarPartida(Request $request)
     {
         $partida = session('partida');
 
         if (!$partida) {
             return;
         } 
+
+        $nuevoEstado = $request->input('nuevoEstado');
+        $partida->estado = $nuevoEstado; 
+
         $tiempoInicio = session('hora_inicio_juego'); // comienzo partida
         $tiempoFin = time();
         $partida->guardarPartida($tiempoInicio, $tiempoFin);
 
         session()->flush(); 
 
-        
+        if($partida->estado = 'interrumpida')
+        {
+            return redirect()->route('home'); 
+        }
+
         $partidasRanking = [];
         if($partida->estado = 'derrota')
         {
             Log::info('Partida luego de guardar: ' .$partida);
             $dificultadPartida = $partida->palabra->dificultad->nombre_dificultad; 
             $partidasRanking = Partida::obtenerRankingPartidas($dificultadPartida);
-            return View('resultado', ['partida' => $partida, 'partidasRanking' => $partidasRanking]);   
         }
-        //partida interrumpida
-        return redirect()->route('home'); 
-        
+
+        return View('resultado', ['partida' => $partida, 'partidasRanking' => $partidasRanking]);
         
     }
     

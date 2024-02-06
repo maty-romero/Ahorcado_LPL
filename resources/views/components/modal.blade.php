@@ -13,10 +13,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 
-          <form method="POST" action="{{ $rutaConfirmar }}">
-            @csrf
-            <button type="submit" class="btn btn-warning">{{ $textBtnConfirmar }}</button>
-          </form>
+          {{ $botonFooter ?? '' }}
         </div>
       </div>
     </div>

@@ -26,6 +26,7 @@ Route::get('/partida/{idPartida}', [PartidaController::class, 'show'])->name('sh
 Route::post('/evaluarLetra', [PartidaController::class, 'evaluaLetra'])->name('ingresoLetra');
 
 Route::post('/finalizarPartida', [PartidaController::class, 'finalizarPartida'])->name('finPartida');
+
 Route::post('/rendirsePartida', [PartidaController::class, 'rendirsePartida'])->name('finPartidaRendicion');
 Route::post('/interrumpirPartida', [PartidaController::class, 'interrumpirPartida'])->name('finPartidaInterrumpcion');
 
