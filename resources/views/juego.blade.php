@@ -104,7 +104,8 @@
 
     <script>
         document.getElementById('btnInterrumpir').addEventListener('click', function() {
-            finalizarPartidaFrm('interrumpida');
+            document.getElementById('nuevoEstado').value = 'interrumpida';
+            document.getElementById('formFinalizarPartida').submit();
         });
     </script>
 

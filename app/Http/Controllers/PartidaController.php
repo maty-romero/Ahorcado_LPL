@@ -55,6 +55,7 @@ class PartidaController extends Controller
         } 
 
         $nuevoEstado = $request->input('nuevoEstado');
+        
         $partida->estado = $nuevoEstado; 
 
         $tiempoInicio = session('hora_inicio_juego'); // comienzo partida
