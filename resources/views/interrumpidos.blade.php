@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+    @vite('resources/js/interrumpidos.js')
+
     <h1 class="text-center">Juegos interrumpidos</h1>
 
     <div class="container">
@@ -9,7 +11,7 @@
                 <a href="#" class="btn btn-warning">Eliminar juegos interrumpidos</a>
             </div>
 
-            <table class="table text-center">
+            <table id="tablaPartidas" class="table text-center">
                 <thead class="thead-dark">
                     <tr class="table-warning">
                         <th scope="col">Nro. de Partida</th>
@@ -26,7 +28,11 @@
                             <td>{{ $partida->updated_at->format('d/m/Y') }}</td>
                             <td>{{ $partida->palabra->dificultad->nombre_dificultad }}</td>
                             <td><a type="button" class="btn btn-primary" href="{{route('show', $partida->id)}}">Reanudar</a></td>
-                            <td><a type="button" class="btn btn-danger">Finalizar</a></td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-finalizar" data-partida-id="{{ $partida->id }}">
+                                    Finalizar
+                                </button>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

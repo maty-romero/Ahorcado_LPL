@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('longitud_minima');
             $table->integer('longitud_maxima');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

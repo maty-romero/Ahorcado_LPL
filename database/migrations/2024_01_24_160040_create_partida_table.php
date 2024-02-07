@@ -19,7 +19,8 @@ return new class extends Migration
             $table->time('tiempo_jugado'); // modificar formato en Model
             $table->unsignedBigInteger('palabra_id'); 
             $table->timestamps(); //fecha creacion
-            $table->foreign('palabra_id')->references('id')->on('palabra'); 
+            $table->foreign('palabra_id')->references('id')->on('palabra');
+            $table->softDeletes(); 
         });
     }
 

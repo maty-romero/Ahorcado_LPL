@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Palabra;
 use Barryvdh\Debugbar\LaravelDebugbar;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 class PartidaController extends Controller
 {
     public function index_interrumpidos()
@@ -83,4 +84,20 @@ class PartidaController extends Controller
         return response()->json($response);
     }
 
+    public function eliminarPartida(Request $request)
+    {
+        $id = $request->input('partidaId'); 
+        
+        try {
+            $user = Auth::user();
+            $partida = $user->partidas->where('partida_id', $id)->first();
+            $partida->delete();
+            
+            return response()->json(['message' => 'Partida eliminada correctamente'], 200);
+        
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'No se pudo encontrar la partida con el ID proporcionado'], 404);
+        }
+
+    }
 }

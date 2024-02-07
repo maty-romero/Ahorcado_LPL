@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('pais_recidencia'); 
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
+            
         });
     }
 

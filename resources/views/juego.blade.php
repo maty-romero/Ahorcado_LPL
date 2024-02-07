@@ -5,7 +5,6 @@
 @vite('resources/js/cronometro.js')
 @vite('resources/js/partida.js')
 
-
 @php
     if (!session()->has('partida')) {
         session()->put('partida', $partida);

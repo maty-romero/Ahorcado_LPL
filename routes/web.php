@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/finalizarPartida', [PartidaController::class, 'finalizarPartida'])->name('finPartida');
     
+    Route::delete('/eliminarPartida', [PartidaController::class, 'eliminarPartida'])->name('deletePartida');
+    
 });
 
 //Logs 
