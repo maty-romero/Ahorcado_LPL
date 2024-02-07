@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
     
     Route::delete('/eliminarPartida', [PartidaController::class, 'eliminarPartida'])->name('deletePartida');
     
+    Route::delete('/eliminarInterrumpidas', [PartidaController::class, 'eliminarPartidasInterrumpidas'])->name('deleteInterrumpidas');
+
 });
 
 //Logs 

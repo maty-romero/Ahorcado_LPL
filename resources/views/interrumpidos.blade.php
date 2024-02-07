@@ -7,8 +7,28 @@
 
     <div class="container">
         @if ($partidas)
+
+            <x-modal>
+                <x-slot name="idModal">modalEliminarInterrumpidas</x-slot>
+                <x-slot name="titulo">Eliminar todas las partidas interrumpidas</x-slot>
+                
+                <div class="form-group" id="arriesgaConteiner">
+                    <label for="txtPalabra" class="font-weight-bold" style="font-size: 1.3em;">
+                        ¿Estas seguro que deseas eliminar todas las partidas interrumpidas hasta el momento?
+                    </label>
+                </div>
+        
+                <x-slot name="botonFooter">
+                    <button id="btnEliminarAll" type="button" class="btn btn-warning" data-bs-dismiss="modal">
+                        Confirmar
+                    </button>
+                </x-slot>
+            </x-modal>
+
             <div class="d-flex justify-content-end mb-3">
-                <a href="#" class="btn btn-warning">Eliminar juegos interrumpidos</a>
+                <button id="btnModalDeleteAll" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEliminarInterrumpidas">
+                    Eliminar juegos interrumpidos
+                </button>
             </div>
 
             <table id="tablaPartidas" class="table text-center">

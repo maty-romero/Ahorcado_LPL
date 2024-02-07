@@ -13,7 +13,10 @@ class PartidaController extends Controller
 {
     public function index_interrumpidos()
     {
-        $partidas_interrumpidas = Auth::user()->partidas->where('estado', '=', 'interrumpida'); 
+        $partidas_interrumpidas = Auth::user()->partidas()
+        ->where('estado', '=', 'interrumpida')
+        ->orderBy('updated_at', 'desc') // Ordenar por updated_at de forma descendente
+        ->get();        
         return view('interrumpidos', ['partidas' => $partidas_interrumpidas]);
     } 
     public function show(string $idPartida){
@@ -100,4 +103,26 @@ class PartidaController extends Controller
         }
 
     }
+    
+    public function eliminarPartidasInterrumpidas()
+    {
+        $user = Auth::user();
+        $partidasInterrumpidas = $user->partidas()->where('estado', 'interrumpida')->get();
+
+        try {
+            // Eliminar partidas interrumpidas tabla user_partida
+            $user->partidas()->detach($partidasInterrumpidas->pluck('id'));
+
+            // tabla partida
+            $partidasInterrumpidas->each(function ($partida) {
+                $partida->delete();
+            });
+
+            return response()->json(['message' => 'Partidas interrumpidas eliminadas correctamente'], 200);
+        
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'No se pudieron eliminar las partidas interrumpidas'], 404);
+        }
+    }
+
 }
