@@ -20,12 +20,6 @@ function habilitarBotones() {
     btnInterrumpir.disabled = false;
 }
 
-function finalizarPartidaFrm(nuevoEstado){
-    document.getElementById('nuevoEstado').value = nuevoEstado;
-    document.getElementById('formFinalizarPartida').submit();
-    //window.location.replace('/finalizarPartida' + nuevoEstado);
-}
-
 // Evento Btn Ingreso de letra 
 btnIngresarLetra.addEventListener('click', async () => {
 
@@ -64,7 +58,8 @@ btnIngresarLetra.addEventListener('click', async () => {
         {
             console.log("Ha terminado la partida!!! -- Accionar Modal resultado");
             let nuevoEstado = respuesta.data.estadoPartida;
-            finalizarPartidaFrm(nuevoEstado); 
+            document.getElementById('nuevoEstado').value = nuevoEstado;
+            document.getElementById('formFinalizarPartida').submit(); 
         }
         
         actualizarPalabraEnmascarada(palabraJuego, respuesta.data.letras_ingresadas)

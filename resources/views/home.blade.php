@@ -1,11 +1,8 @@
+
 @extends('layouts.app')
 
 @section('content')
 
-<!-- Coloca esta etiqueta antes de la etiqueta de cierre </body> -->
-<script src="resources/js/home.js"></script>
-
-{{--
 <div class="container" id="loginCard">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -26,7 +23,7 @@
         </div>
     </div>
 </div>
---}}
+
 
 <div class="container-fluid">
     <div class="row justify-content-center mt-4">
@@ -69,3 +66,4 @@
 
 
 @endsection
+

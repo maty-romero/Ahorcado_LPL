@@ -17,7 +17,6 @@ class PartidaController extends Controller
     } 
     public function show(string $idPartida){
         $partida = Partida::findOrFail($idPartida);
-        session()->flush();
         return view('juego', ['partida' => $partida]);
     }
 
@@ -48,60 +47,42 @@ class PartidaController extends Controller
 
     public function finalizarPartida(Request $request)
     {
-        $partida = session('partida');
-
+        //$partida = session('partida');
+        //Log::info("Session partida: " .$partida);
+        /*
         if (!$partida) {
+            Log::info("No hay partida en session");
             return;
         } 
+        */
 
         $nuevoEstado = $request->input('nuevoEstado');
-        
-        $partida->estado = $nuevoEstado; 
+        Log::info("Nuevo estado partida: " .$nuevoEstado);
+
+        session('partida')->estado = $nuevoEstado; 
 
         $tiempoInicio = session('hora_inicio_juego'); // comienzo partida
         $tiempoFin = time();
-        $partida->guardarPartida($tiempoInicio, $tiempoFin);
+        session('partida')->guardarPartida($tiempoInicio, $tiempoFin); 
 
-        session()->flush(); 
-
-        if($partida->estado = 'interrumpida')
+        if(session('partida')->estado == 'interrumpida')
         {
-            return redirect()->route('home'); 
+            session()->forget('partida');
+            session()->forget('hora_inicio_juego');
+            return to_route('home');
+            //('home') 
         }
 
         $partidasRanking = [];
-        if($partida->estado = 'derrota')
+        if(session('partida')->estado == 'derrota')
         {
-            Log::info('Partida luego de guardar: ' .$partida);
-            $dificultadPartida = $partida->palabra->dificultad->nombre_dificultad; 
+            //Log::info('Partida luego de guardar: ' .$partida);
+            $dificultadPartida = session('partida')->palabra->dificultad->nombre_dificultad; 
             $partidasRanking = Partida::obtenerRankingPartidas($dificultadPartida);
         }
-
-        return View('resultado', ['partida' => $partida, 'partidasRanking' => $partidasRanking]);
+        
+        return View('resultado', ['partida' => session('partida'), 'partidasRanking' => $partidasRanking]);
         
     }
     
-    public function interrumpirPartida()
-    {
-        $partida = session('partida');
-
-        if (!$partida) {
-            return;
-        } 
-        $partida->estado = 'interrumpida'; 
-        session()->put('partida', $partida); 
-        return redirect()->route('finPartida');
-    }
-    public function rendirsePartida()
-    {
-        $partida = session('partida');
-
-        if (!$partida) {
-            return;
-        } 
-        $partida->estado = 'derrota'; 
-        session()->put('partida', $partida); 
-        return redirect()->route('finPartida');
-         
-    }
 }

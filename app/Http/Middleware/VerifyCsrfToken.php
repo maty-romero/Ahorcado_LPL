@@ -15,6 +15,7 @@ class VerifyCsrfToken extends Middleware
         '/evaluarLetra',
         '/finalizarPartida',
         '/rendirsePartida',
-        '/interrumpirPartida'
+        '/interrumpirPartida',
+        '/logout',
     ];
 }

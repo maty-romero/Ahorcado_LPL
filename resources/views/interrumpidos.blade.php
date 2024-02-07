@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    @php
-        session()->flush();
-    @endphp
     <h1 class="text-center">Juegos interrumpidos</h1>
 
     <div class="container">
