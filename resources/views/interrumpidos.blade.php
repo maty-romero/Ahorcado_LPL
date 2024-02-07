@@ -23,7 +23,7 @@
                 </thead>
                 <tbody>
                     @foreach ($partidas as $partida)
-                        <tr>
+                        <tr data-partida-id="{{ $partida->id }}">
                             <td>{{ $partida->id }}</td>
                             <td>{{ $partida->updated_at->format('d/m/Y') }}</td>
                             <td>{{ $partida->palabra->dificultad->nombre_dificultad }}</td>

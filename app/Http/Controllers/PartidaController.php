@@ -86,11 +86,11 @@ class PartidaController extends Controller
 
     public function eliminarPartida(Request $request)
     {
-        $id = $request->input('partidaId'); 
-        
+        $partidaId = $request->input('partidaId'); 
+        $user = Auth::user();
         try {
-            $user = Auth::user();
-            $partida = $user->partidas->where('partida_id', $id)->first();
+            $partida = $user->partidas()->where('partida_id', '=', $partidaId)->firstOrFail();
+            $user->partidas()->detach($partidaId);
             $partida->delete();
             
             return response()->json(['message' => 'Partida eliminada correctamente'], 200);
