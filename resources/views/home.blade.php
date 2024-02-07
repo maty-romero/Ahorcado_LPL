@@ -3,27 +3,28 @@
 
 @section('content')
 
-<div class="container" id="loginCard">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('') }}</div>
+@if (session()->has('loginCardShown'))
+    <div class="container" id="loginCard">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">{{ __('') }}</div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                    <div class="card-body">
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
 
-                    {{ __('Haz iniciado sesion!') }}
-                     
+                        {{ __('Haz iniciado sesion!') }}
+                        
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+@endif
 
 <div class="container-fluid">
     <div class="row justify-content-center mt-4">

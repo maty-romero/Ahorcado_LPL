@@ -86,5 +86,25 @@ class Palabra extends Model
         return $resultado;
     }
     
-    
+    public function verificarPalabra(string $palabraIngreso){ 
+        $format = false; 
+        $coincidencia = false; 
+
+        $palabraFormat = preg_replace('/\s+/', '', $palabraIngreso); // sacar espacios en blanco 
+
+        if(!preg_match('/[^a-zA-Z]/', $palabraFormat))
+        {
+            $format = true; // formato adecuado
+            $palabraFormat = strtolower($palabraIngreso);
+            if($this->palabra == $palabraFormat)
+            {
+                $coincidencia = true;    
+            }
+        }
+        
+        return [
+            'format' => $format,
+            'coincidencia' => $coincidencia
+        ];
+    }
 }

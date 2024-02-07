@@ -20,7 +20,7 @@ function habilitarBotones() {
     btnInterrumpir.disabled = false;
 }
 
-// Evento Btn Ingreso de letra 
+// Peticion asincronica: Ingreso letra
 btnIngresarLetra.addEventListener('click', async () => {
 
     deshabilitarBotones();
@@ -93,3 +93,49 @@ function actualizarPalabraEnmascarada(palabra, letrasIngresadas) {
     }
     document.getElementById('idPalabraEnmascarada').textContent = palabraEnmascarada;
 }
+
+
+// Peticion asincronica: Ingreso Palabra
+btnArriesgar.addEventListener('click', async () => {
+    
+    try {
+        let palabraIngresada = document.getElementById('txtPalabraArriesgar').value;
+        //const palabraJuego = document.getElementById('palabraJuego').value;
+        
+        // Peticion Ajax con Axios, incluyendo el token CSRF en los datos
+         
+        const respuesta = await axios.post('/evaluarPalabra', {
+            palabraIngreso: palabraIngresada
+        }, {
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        });
+        
+        // Manejar la respuesta
+        console.log(respuesta.data);
+
+        if(!respuesta.data.format)
+        {
+            let contenedor = document.getElementById('arriesgaConteiner');
+
+            let mensajeError = document.createElement('p');
+            mensajeError.textContent = "No se deben ingresar caracteres especiales y/o numeros.";
+            mensajeError.classList.add('text-danger');
+
+            let inputElement = contenedor.querySelector('input');
+            contenedor.insertBefore(mensajeError, inputElement.nextSibling);
+
+        }else{
+            if(respuesta.data.coincidencia){
+                document.getElementById('nuevoEstado').value = 'victoria';
+            }
+
+            document.getElementById('nuevoEstado').value = 'derrota';
+            document.getElementById('formFinalizarPartida').submit();
+        }
+        
+    } catch (error) {
+        console.error('Error al realizar la petición:', error);
+    }
+});

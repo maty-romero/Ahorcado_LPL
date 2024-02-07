@@ -47,15 +47,6 @@ class PartidaController extends Controller
 
     public function finalizarPartida(Request $request)
     {
-        //$partida = session('partida');
-        //Log::info("Session partida: " .$partida);
-        /*
-        if (!$partida) {
-            Log::info("No hay partida en session");
-            return;
-        } 
-        */
-
         $nuevoEstado = $request->input('nuevoEstado');
         Log::info("Nuevo estado partida: " .$nuevoEstado);
 
@@ -85,4 +76,11 @@ class PartidaController extends Controller
         
     }
     
+    public function evaluarPalabra(Request $request)
+    {
+        $palabraIngreso = $request->input('palabraIngreso'); 
+        $response = session('partida')->palabra->verificarPalabra($palabraIngreso);
+        return response()->json($response);
+    }
+
 }

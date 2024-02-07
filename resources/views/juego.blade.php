@@ -3,7 +3,7 @@
 @section('content')
 
 @vite('resources/js/cronometro.js')
-@vite('resources/js/ingresoLetra.js')
+@vite('resources/js/partida.js')
 
 
 @php
@@ -78,7 +78,7 @@
         </span>
     </div>
 
-    {{--Modales--}}
+    {{--Modal Rendirse--}}
     <x-modal>
         <x-slot name="idModal">modalRendirse</x-slot>
         <x-slot name="titulo">Rendirse</x-slot>
@@ -97,6 +97,7 @@
         });
     </script>
 
+    {{--Modal Interrumpir--}}
     <x-modal>
         <x-slot name="idModal">modalInterrumpir</x-slot>
         <x-slot name="titulo">Interrumpir Partida</x-slot>
@@ -116,9 +117,25 @@
         });
     </script>
 
+    {{--Modal Arriesgar palabra--}}
+    <x-modal>
+        <x-slot name="idModal">modalArriesgar</x-slot>
+        <x-slot name="titulo">Arriesgar una palabra</x-slot>
+        
+        <div class="form-group" id="arriesgaConteiner">
+            <label for="txtPalabra" class="font-weight-bold" style="font-size: 1.3em;">Ingrese una palabra:</label>
+            <input id="txtPalabraArriesgar" type="text" name="palabraIngreso" class="form-control">
+        </div>
+
+        <x-slot name="botonFooter">
+            <button id="btnArriesgar" type="button" class="btn btn-warning">Arriesgar</button>
+        </x-slot>
+    </x-modal>
+    {{--Script:Funciones.js verificacion igualdad palabra adivinar--}}
+
     <div class="text-center pt-3">
         <button id="btnIngresarLetra" class="btn btn-primary mr-2" style="font-size: 1.8em;">Ingresar una letra</button>
-        <button id="btnArriesgar" class="btn btn-primary mr-2"  style="font-size: 1.8em;">Arriesgar una palabra</button>
+        <button id="btnArriesgar" class="btn btn-info mr-2" data-bs-toggle="modal" data-bs-target="#modalArriesgar" style="font-size: 1.8em;">Arriesgar una palabra</button>
         <button id="btnRendirse" class="btn btn-danger mr-2" data-bs-toggle="modal" data-bs-target="#modalRendirse" style="font-size: 1.8em;">Rendirse</button>
         <button id="btnInterrumpir" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalInterrumpir" style="font-size: 1.8em;">Interrumpir juego</button>
     </div>
