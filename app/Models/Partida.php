@@ -95,4 +95,16 @@ class Partida extends Model
         return $rankingPartidas;
     }
 
+    public static function crearPartida(string $idPalabraDificultad)
+    {
+        $partida = new Partida();
+        $partida->estado = 'iniciada'; 
+        $partida->oportunidades_restantes = 10; 
+        $partida->letras_ingresadas = '';
+        $partida->tiempo_jugado = '00:00:00'; 
+        $partida->palabra_id = $idPalabraDificultad; // palabra con la dificultad elegida
+        $partida->save();
+
+        return $partida; 
+    }
 }

@@ -103,7 +103,6 @@ class PartidaController extends Controller
         }
 
     }
-    
     public function eliminarPartidasInterrumpidas()
     {
         $user = Auth::user();
@@ -123,6 +122,23 @@ class PartidaController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'No se pudieron eliminar las partidas interrumpidas'], 404);
         }
+    }
+
+    public function iniciarPartida(Request $request)
+    {
+        $idDificultad = $request->input('dificultad'); 
+
+        try {
+            $idPalabraRandom = Palabra::getPalabraRandomificultad($idDificultad);
+            $partida = Partida::crearPartida($idPalabraRandom);
+            session()->put('partida', $partida);
+
+            return view('juego', ['partida' => $partida]);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Error al iniciar una nueva partida'], 404);
+        }
+
     }
 
 }

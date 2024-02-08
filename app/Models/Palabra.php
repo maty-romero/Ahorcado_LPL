@@ -108,4 +108,14 @@ class Palabra extends Model
             'coincidencia' => $coincidencia
         ];
     }
+    public static function getPalabraRandomificultad(string $idDificultad)
+    {
+        $palabras = Palabra::where('dificultad_id', $idDificultad)->get();
+
+        // Seleccionar una palabra aleatoria de la lista
+        $palabraAleatoria = $palabras->random();
+
+        // Devolver el ID de la palabra seleccionada
+        return $palabraAleatoria->id;
+    }
 }

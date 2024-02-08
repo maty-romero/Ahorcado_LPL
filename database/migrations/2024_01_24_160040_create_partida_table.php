@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('partida', function (Blueprint $table) {
             $table->id();
-            $table->enum('estado', ['victoria', 'interrumpida', 'derrota']);  
+            $table->enum('estado', ['victoria', 'interrumpida', 'derrota', 'iniciada']);  
             $table->integer('oportunidades_restantes')->default(10);  
             $table->string('letras_ingresadas')->default(''); //acertadas y falladas
             $table->time('tiempo_jugado'); // modificar formato en Model

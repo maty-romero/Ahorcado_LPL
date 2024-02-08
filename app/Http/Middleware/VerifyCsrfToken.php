@@ -17,5 +17,6 @@ class VerifyCsrfToken extends Middleware
         '/rendirsePartida',
         '/interrumpirPartida',
         '/logout',
+        '/iniciarPartida'
     ];
 }
