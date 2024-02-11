@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo; 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 class Partida extends Model
 {
     use HasFactory, SoftDeletes;
@@ -44,30 +45,32 @@ class Partida extends Model
         return $tiempoTotalFormateado;
     }
 
-    public function guardarPartida($tiempoInicio, $tiempoFin)
+    public static function guardarPartida($tiempoInicio, $tiempoFin, $idPartida)
     {
-        $tiempoTotalAnterior = Partida::getTiempoPartidaCronometro($this->tiempo_jugado); // tiempo anterior jugado
+        $partida = Partida::find($idPartida);
+
+        Log::info("Partida encontrada para guardar: " .$partida);
+
+        $tiempoTotalAnterior = Partida::getTiempoPartidaCronometro($partida->tiempo_jugado); // tiempo anterior jugado
         // tiempo jugado hasta el momento
         $tiempoTotalNuevo = Partida::getNuevoTiempoJugado($tiempoInicio, $tiempoFin, $tiempoTotalAnterior);
-        $this->tiempo_jugado = $tiempoTotalNuevo;
 
-        $actualizado = $this->actualizarPartida($this);
+        /*
+        $table->enum('estado', ['victoria', 'interrumpida', 'derrota', 'iniciada']);  
+            $table->integer('oportunidades_restantes')->default(10);  
+            $table->string('letras_ingresadas')->default(''); //acertadas y falladas
+            $table->time('tiempo_jugado'); // modificar formato en Model
+            $table->unsignedBigInteger('palabra_id');
+        */
 
-        if (!$actualizado) {
-            // hubo un error al actualizar 
-            return;
-        } 
-    }
+        $partida->update([
+            'estado' => session('partida')->estado,
+            'oportunidades_restantes' => session('partida')->oportunidades_restantes,
+            'letras_ingresadas' => session('partida')->letras_ingresadas,
+            'tiempo_jugado' => $tiempoTotalNuevo
+        ]);
+        $partida->save();
 
-    private function actualizarPartida(Partida $partida)
-    {
-        $this->estado = $partida->estado;
-        $this->oportunidades_restantes = $partida->oportunidades_restantes;
-        $this->letras_ingresadas = $partida->letras_ingresadas;
-        $this->tiempo_jugado = $partida->tiempo_jugado;
-        $this->palabra_id = $partida->palabra_id;
-
-        return $this->save();
     }
 
     /*
@@ -95,7 +98,7 @@ class Partida extends Model
         return $rankingPartidas;
     }
 
-    public static function crearPartida(string $idPalabraDificultad)
+    public static function crearPartida(string $idPalabraDificultad, string $idJugador)
     {
         $partida = new Partida();
         $partida->estado = 'iniciada'; 
@@ -105,6 +108,11 @@ class Partida extends Model
         $partida->palabra_id = $idPalabraDificultad; // palabra con la dificultad elegida
         $partida->save();
 
+        $userPartida = new UserPartida();
+        $userPartida->user_id = $idJugador; 
+        $userPartida->partida_id = $partida->id;
+        $userPartida->save();
+        
         return $partida; 
     }
 }

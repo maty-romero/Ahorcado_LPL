@@ -19,6 +19,6 @@ class Dificultad extends Model
 
     public function palabras(): HasMany
     {
-        return $this->hasMany(Palabra::class);
+        return $this->hasMany(Palabra::class, 'dificultad_id');
     }
 }

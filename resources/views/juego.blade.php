@@ -102,7 +102,7 @@
         <x-slot name="titulo">Interrumpir Partida</x-slot>
         
         <p class="font-weight-bold" style="font-size: 1.5em;">¿Estas seguro de que deseas interrumpir la partida?</p>
-        <p class="font-weight-bold" style="font-size: 1.5em;">No te preocupes! Podras continuarla en otro momento</p>
+        <p class="font-weight-bold" style="font-size: 1.5em;">No te preocupes! Podras continuar en otro momento</p>
     
         <x-slot name="botonFooter">
             <button id="btnInterrumpir" type="button" class="btn btn-warning">Interrumpir</button>

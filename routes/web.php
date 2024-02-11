@@ -13,7 +13,7 @@ require __DIR__ . '/auth.php';
 //Auth::routes();
 
 Route::middleware('auth')->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/interrumpidos', [PartidaController::class, 'index_interrumpidos'])->name('index_interrumpidos');
     Route::get('/partida/{idPartida}', [PartidaController::class, 'show'])->name('show');
     

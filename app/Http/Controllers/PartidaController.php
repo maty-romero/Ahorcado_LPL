@@ -52,13 +52,14 @@ class PartidaController extends Controller
     public function finalizarPartida(Request $request)
     {
         $nuevoEstado = $request->input('nuevoEstado');
-        Log::info("Nuevo estado partida: " .$nuevoEstado);
+        Log::info("ID Partida a finalizar: " .session('partida')->id);
 
         session('partida')->estado = $nuevoEstado; 
 
         $tiempoInicio = session('hora_inicio_juego'); // comienzo partida
         $tiempoFin = time();
-        session('partida')->guardarPartida($tiempoInicio, $tiempoFin); 
+        Partida::guardarPartida($tiempoInicio, $tiempoFin, session('partida')->id);
+        //session('partida')->guardarPartida(); 
 
         if(session('partida')->estado == 'interrumpida')
         {
@@ -130,8 +131,7 @@ class PartidaController extends Controller
 
         try {
             $idPalabraRandom = Palabra::getPalabraRandomificultad($idDificultad);
-            $partida = Partida::crearPartida($idPalabraRandom);
-            session()->put('partida', $partida);
+            $partida = Partida::crearPartida($idPalabraRandom, Auth::user()->id); // con jugador asociado
 
             return view('juego', ['partida' => $partida]);
 

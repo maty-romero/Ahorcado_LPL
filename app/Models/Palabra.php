@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
+use function PHPUnit\Framework\throwException;
+
 class Palabra extends Model
 {
     use HasFactory, SoftDeletes;
@@ -20,7 +23,7 @@ class Palabra extends Model
 
     public function dificultad(): BelongsTo
     {
-        return $this->belongsTo(Dificultad::class);
+        return $this->belongsTo(Dificultad::class, 'dificultad_id');
     }
 
     public function partidas(): HasMany
@@ -32,7 +35,7 @@ class Palabra extends Model
     {
         $mensaje = '';
 
-        $letrasIngresadas = session('partida')->letras_ingresadas; // sino tiene valor ''
+        $letrasIngresadas = session('partida')->letras_ingresadas; 
         
         $caracterUtf8 = mb_convert_encoding($caracter, 'UTF-8', mb_detect_encoding($caracter));
 
@@ -43,14 +46,14 @@ class Palabra extends Model
         } else {
             $estaEnPalabra = strpos($palabra, $caracter) !== false;
             if ($estaEnPalabra) {
-                $mensaje = "El carácter '$caracter' está presente en la palabra. Bien hecho!";
+                $mensaje = "La letra '$caracter' está presente en la palabra. Bien hecho!";
             } else {
-                $mensaje = "El carácter '$caracter' no está presente en la palabra. Sigue participando!";
+                $mensaje = "La latra '$caracter' no está presente en la palabra. Sigue participando!";
                 // Decrementar las oportunidades restantes
                 session('partida')->oportunidades_restantes--; 
             }
             // Agregar el carácter ingresado a las letras ingresadas en la sesión
-            $letrasIngresadas .= ",".$caracter;
+            $letrasIngresadas .= $caracter .", ";
             session('partida')->letras_ingresadas = $letrasIngresadas; 
         }
 
@@ -79,13 +82,15 @@ class Palabra extends Model
 
     public static function getLetrasNoAcertadas($palabra, $letrasIngresadas)
     {
+        $letrasIngresadas = trim($letrasIngresadas);
         $letrasIngresadasArray = explode(',', $letrasIngresadas);
         $letrasIngresadasArray = array_map('trim', $letrasIngresadasArray);
         $palabraArray = str_split($palabra);
         $letrasNoPresentes = array_diff($letrasIngresadasArray, $palabraArray);
-        $resultado = implode(',', $letrasNoPresentes);
+        $resultado = implode(', ', $letrasNoPresentes);
         return $resultado;
     }
+
     
     public function verificarPalabra(string $palabraIngreso){ 
         $format = false; 
@@ -110,10 +115,19 @@ class Palabra extends Model
     }
     public static function getPalabraRandomificultad(string $idDificultad)
     {
+        Log::info("Dificultad GetPalabraRandom " .$idDificultad);
         $palabras = Palabra::where('dificultad_id', $idDificultad)->get();
+        
+        Log::info("Coleccion palabras dificultad " .$idDificultad.": " .$palabras);
 
+        $palabraAleatoria = null; 
+        if ($palabras->isNotEmpty()) {
+            $palabraAleatoria = $palabras->random();
+        }
+        /*
         // Seleccionar una palabra aleatoria de la lista
-        $palabraAleatoria = $palabras->random();
+        //$palabraAleatoria = $palabras->random();
+        */
 
         // Devolver el ID de la palabra seleccionada
         return $palabraAleatoria->id;
