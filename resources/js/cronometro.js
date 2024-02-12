@@ -34,7 +34,7 @@ function iniciarCronometro(tiempoInicial) {
         document.getElementById('tiempoJugado').textContent = "";
         document.getElementById('tiempoJugado').textContent = tiempoMostrar;
         
-        console.log(tiempoMostrar);
+        //console.log(tiempoMostrar);
 
 
     }, 1000); // Actualizar cada segundo (1000 milisegundos)

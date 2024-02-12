@@ -82,7 +82,11 @@ function esperarTecla() {
     });
 }
 
+// export para incluir dentro de blade 
 function actualizarPalabraEnmascarada(palabra, letrasIngresadas) {
+    let contenedorPalabra = document.getElementById('idPalabraEnmascarada');
+    contenedorPalabra.textContent = ""; 
+
     let palabraEnmascarada = '';
     for (let i = 0; i < palabra.length; i++) {
         if (letrasIngresadas.includes(palabra[i])) {
@@ -91,7 +95,8 @@ function actualizarPalabraEnmascarada(palabra, letrasIngresadas) {
             palabraEnmascarada += ' _ ';
         }
     }
-    document.getElementById('idPalabraEnmascarada').textContent = palabraEnmascarada;
+    
+    contenedorPalabra.textContent = palabraEnmascarada;
 }
 
 
