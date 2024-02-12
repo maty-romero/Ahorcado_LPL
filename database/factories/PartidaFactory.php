@@ -16,16 +16,13 @@ class PartidaFactory extends Factory
      */
     public function definition(): array
     {
-        static $estados = ['victoria', 'interrumpida', 'derrota'];  
-        static $palabras = [1,2,3,4,5,6,7]; 
-
-        //substr(str_shuffle(str_repeat("abcdefghijklmnopqrstuvwxyz", 4)), 0, 5)
+        static $estados = ['victoria', 'interrumpida', 'derrota'];   
 
         return [
             'estado' => $estados[array_rand($estados)],
             'oportunidades_restantes' => rand(0, 10),
             'tiempo_jugado' => sprintf('%02d:%02d', mt_rand(0, 59), mt_rand(0, 59)),
-            'palabra_id' => $palabras[array_rand($palabras)],
+            'palabra_id' => rand(1, 30),
         ];
     }
 }
