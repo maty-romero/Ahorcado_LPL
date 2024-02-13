@@ -134,13 +134,22 @@ btnArriesgar.addEventListener('click', async () => {
         }else{
             if(respuesta.data.coincidencia){
                 document.getElementById('nuevoEstado').value = 'victoria';
+            }else{
+                document.getElementById('nuevoEstado').value = 'derrota';
             }
 
-            document.getElementById('nuevoEstado').value = 'derrota';
             document.getElementById('formFinalizarPartida').submit();
         }
         
     } catch (error) {
         console.error('Error al realizar la petición:', error);
     }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Tu código aquí se ejecutará cuando se cargue el DOM
+    const palabraJuego = document.getElementById('palabraJuego').value;
+    const letrasIngresadas = document.getElementById('letrasIngresadasInicial').value;
+
+    actualizarPalabraEnmascarada(palabraJuego, letrasIngresadas);
 });

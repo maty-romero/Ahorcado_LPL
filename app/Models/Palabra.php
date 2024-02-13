@@ -102,6 +102,7 @@ class Palabra extends Model
         {
             $format = true; // formato adecuado
             $palabraFormat = strtolower($palabraIngreso);
+            
             if($this->palabra == $palabraFormat)
             {
                 $coincidencia = true;    

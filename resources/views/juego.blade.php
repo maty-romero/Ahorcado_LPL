@@ -67,6 +67,8 @@
     </div>
     <input type="hidden" id="palabraJuego" value="{{ $partida->palabra->palabra }}">
     <input type="hidden" id="tiempoJugadoInicial" value="{{ $partida->tiempo_jugado }}">
+    <input type="hidden" id="letrasIngresadasInicial" value="{{ $partida->letras_ingresadas }}">
+
     <div class="mt-3 mb-4 text-center pt-3 border border-info">
         <span class="font-weight-bold text-dark" style="font-size: 1.8em;">Letras no acertadas:</span> 
         @php
