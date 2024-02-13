@@ -30,17 +30,44 @@
     <div class="row justify-content-center mt-4">
         <div class="col-md-4 mb-4">
             <div class="bg-secondary text-light p-4">
-                <!-- Contenido del primer div -->
-                <h1>Bienvenido!</h1>
-                <p>Ultimo Juego: </p>
-                <p>Resultado del juego: </p>
+                @if (isset($_COOKIE[Auth::user()->username]))
+                    @php
+                        $partes = explode(';', $_COOKIE[Auth::user()->username]);
+                        $estado = $partes[0]; 
+                        $fecha = $partes[1]; 
+                    @endphp
+                    <h1>Bienvenido/a nuevamente!</h1>
+                    <p>Tu ultima partida fue el: {{ $fecha }}</p>
+                    <p>Resultado del juego: {{ $estado }}</p>
+                @else
+                    <h1>Bienvenido/a a AhorcadoApp!</h1>
+                @endif
+                
             </div>
         </div>
         <div class="col-md-4 mb-4">
             <div class="bg-info text-light p-4">
-                <!-- Contenido del segundo div -->
                 <h1>Estadisticas personales</h1>
-                <p>Contenido del segundo div.</p>
+                <table id="tablaPartidas" class="table text-center">
+                    <thead class="thead-dark">
+                        <tr class="table-warning">
+                            <th scope="col">Dificultad</th>
+                            <th scope="col">Palabras adivinadas</th>
+                            <th scope="col">Tiempo minimo</th>
+                            <th scope="col">Tiempo maximo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($estadisticas as $result)
+                            <tr>
+                                <td>{{ $result->nombre_dificultad }}</td>
+                                <td>{{ $result->cantidad }}</td>
+                                <td>{{ $result->tiempo_minimo }}</td>
+                                <td>{{ $result->tiempo_maximo }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

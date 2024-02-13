@@ -9,6 +9,7 @@ use App\Models\Palabra;
 use Barryvdh\Debugbar\LaravelDebugbar;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Cookie;
 class PartidaController extends Controller
 {
     public function index_interrumpidos()
@@ -52,14 +53,19 @@ class PartidaController extends Controller
     public function finalizarPartida(Request $request)
     {
         $nuevoEstado = $request->input('nuevoEstado');
-        Log::info("ID Partida a finalizar: " .session('partida')->id);
+        //Log::info("ID Partida a finalizar: " .session('partida')->id);
 
         session('partida')->estado = $nuevoEstado; 
 
         $tiempoInicio = session('hora_inicio_juego'); // comienzo partida
         $tiempoFin = time();
         Partida::guardarPartida($tiempoInicio, $tiempoFin, session('partida')->id);
-        //session('partida')->guardarPartida(); 
+        
+        //set Cookie ultima partida 
+        $valorCookie = session('partida')->estado .";". date("d/m/Y");
+        $fechaExpiracion = mktime(date('H'), date('i'), date('s'), date('n'), date('j') + 7, date('Y')); // 7 dias desde fecha actual
+        setcookie(Auth::user()->username); // delete cookie antigua
+        setcookie(Auth::user()->username, $valorCookie, $fechaExpiracion); 
 
         if(session('partida')->estado == 'interrumpida')
         {

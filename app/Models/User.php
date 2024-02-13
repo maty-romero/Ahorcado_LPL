@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -52,4 +53,26 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Partida::class, 'user_partida', 'user_id', 'partida_id');
     }
+
+    public function getEstadisticas()
+    {
+        // Cantidad palabras adivinadas y tiempos min y max por dificultad
+        $estadisticas = DB::table('partida as p')
+        ->select('d.nombre_dificultad', 
+            DB::raw('COUNT(p.id) as cantidad'), 
+            DB::raw('MIN(p.tiempo_jugado) as tiempo_minimo'), 
+            DB::raw('MAX(p.tiempo_jugado) as tiempo_maximo'))
+        ->join('user_partida as up', 'p.id', '=', 'up.partida_id')
+        ->join('users as u', 'up.user_id', '=', 'u.id')
+        ->join('palabra as pal', 'p.palabra_id', '=', 'pal.id')
+        ->join('dificultad as d', 'pal.dificultad_id', '=', 'd.id')
+        ->where('p.estado', '=', 'victoria')
+        ->where('u.id', '=', $this->id) // Filtro por el ID del usuario autenticado
+        ->groupBy('d.nombre_dificultad')
+        ->get();
+
+        return $estadisticas;
+    }
+
+    
 }
