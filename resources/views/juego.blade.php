@@ -8,27 +8,27 @@
 @php
     if (!session()->has('partida')) {
         session()->put('partida', $partida);
-        echo "Se ha asignado una nueva partida!";
+        //echo "Se ha asignado una nueva partida!";
     }
     if (!session()->has('hora_inicio_juego')) {
         $tiempoInicio = time();
         session()->put('hora_inicio_juego', $tiempoInicio);
     }
 
-    dump(session('partida')); 
+    //dump(session('partida')); 
 @endphp
 
-<div class="container mt-5">
+<div class="container">
     
     <div class="d-flex justify-content-between mb-4">
         <div>
-            <span class="font-weight-bold text-dark" style="font-size: 1.8em;">Tiempo jugado:</span> 
+            <span class="fw-bold text-dark" style="font-size: 1.8em;">Tiempo jugado:</span> 
             <span id="tiempoJugado" class="font-weight-bold text-dark" style="font-size: 1.8em;">
                 {{session('partida')->tiempo_jugado}}
             </span>
         </div>
         <div>
-            <span class="font-weight-bold text-dark" style="font-size: 1.8em;">Oportunidades restantes:</span> 
+            <span class="fw-bold text-dark" style="font-size: 1.8em;">Oportunidades restantes:</span> 
             <span id="idOportunidadesRestantes" class="font-weight-bold text-dark" style="font-size: 1.8em;">
                 {{session('partida')->oportunidades_restantes}}
             </span>
@@ -43,17 +43,18 @@
         
         <div class="text-center border border-secondary p-3" style="width: 550px;">
             <div class="border-info mb-3">
-                <span class="font-weight-bold text-info" style="font-size: 1.8em;">Información de la partida:</span> 
+                <span class="fw-bold text-info" style="font-size: 1.8em;">Información de la partida:</span> 
                 <p class="font-weight-bold text-info" style="font-size: 1.7em;" id="idMsjPartida"></p>
             </div>
             <div class="border-top border-warning">
-                <span class="font-weight-bold text-warning" style="font-size: 1.8em;">Letras de la palabra:</span>
+                <span class="fw-bold text-warning" style="font-size: 1.8em;">Letras de la palabra:</span>
                 @php
                     $palabra = session('partida')->palabra->palabra;
                     $letrasIngresadas = explode(',', session('partida')->letras_ingresadas);
                 @endphp
 
                 <p id='idPalabraEnmascarada' class="font-weight-bold text-warning mt-2" style="font-size: 3.0em;" id="idLetrasPalabra">
+                    {{--
                     @foreach (str_split($palabra) as $letra)
                         @if (in_array($letra, $letrasIngresadas))
                             {{ $letra }}
@@ -61,6 +62,7 @@
                             _
                         @endif
                     @endforeach
+                    --}}
                 </p>
             </div>
         </div>
@@ -69,8 +71,8 @@
     <input type="hidden" id="tiempoJugadoInicial" value="{{ $partida->tiempo_jugado }}">
     <input type="hidden" id="letrasIngresadasInicial" value="{{ $partida->letras_ingresadas }}">
 
-    <div class="mt-3 mb-4 text-center pt-3 border border-info">
-        <span class="font-weight-bold text-dark" style="font-size: 1.8em;">Letras no acertadas:</span> 
+    <div class="mt-4 mb-4 text-center pt-3 border border-info">
+        <span class="fw-bold text-dark" style="font-size: 1.8em;">Letras no acertadas:</span> 
         @php
             $letrasNoAcertadas = session('partida')->palabra->getLetrasNoAcertadas($palabra, session('partida')->letras_ingresadas);
         @endphp

@@ -26,7 +26,7 @@
             </x-modal>
 
             <div class="d-flex justify-content-end mb-3">
-                <button id="btnModalDeleteAll" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEliminarInterrumpidas">
+                <button id="btnModalDeleteAll" type="button" class="btn btn-warning text-bold" data-bs-toggle="modal" data-bs-target="#modalEliminarInterrumpidas">
                     Eliminar juegos interrumpidos
                 </button>
             </div>
@@ -44,7 +44,7 @@
                 <tbody>
                     @foreach ($partidas as $partida)
                         <tr data-partida-id="{{ $partida->id }}">
-                            <td>{{ $partida->id }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $partida->updated_at->format('d/m/Y') }}</td>
                             <td>{{ $partida->palabra->dificultad->nombre_dificultad }}</td>
                             <td><a type="button" class="btn btn-primary" href="{{route('show', $partida->id)}}">Reanudar</a></td>

@@ -10,13 +10,13 @@
     <div class="container">
         @if ($partida->estado == 'victoria')
             <div class="alert alert-success text-center" role="alert">
-                <h4>¡Felicidades! Has ganado.</h4>
+                <h4 class="fw-bold">¡Felicidades! Has ganado.</h4>
             </div>
         @else
             <div class="alert alert-warning text-center" role="alert">
-                <h4>¡Derrota!</h4>
+                <h4 class="fw-bold">¡Derrota!</h4>
                 <h4>¡Ánimo! Sigue intentándolo.</h4>
-                <p class="lead">La palabra a adivinar era: <strong>{{ $partida->palabra->palabra }}</strong></p>
+                <p class="lead">La palabra a adivinar era: <strong class="fw-bold">{{ $partida->palabra->palabra }}</strong></p>
             </div>
 
             @if (!empty($partidasRanking))
