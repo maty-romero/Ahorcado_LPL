@@ -100,7 +100,7 @@ function actualizarPalabraEnmascarada(palabra, letrasIngresadas) {
 }
 
 
-// Peticion asincronica: Ingreso Palabra
+// Peticion asincronica: Arriesgar Palabra
 btnArriesgar.addEventListener('click', async () => {
     
     try {
@@ -123,15 +123,18 @@ btnArriesgar.addEventListener('click', async () => {
         if(!respuesta.data.format)
         {
             let contenedor = document.getElementById('arriesgaConteiner');
-
-            let mensajeError = document.createElement('p');
+            let mensajeError = contenedor.querySelector('.text-danger');
+            
+            if (!mensajeError) {
+                mensajeError = document.createElement('p');
+                mensajeError.classList.add('text-danger');
+                contenedor.appendChild(mensajeError);
+            }
+            
             mensajeError.textContent = "No se deben ingresar caracteres especiales y/o numeros.";
-            mensajeError.classList.add('text-danger');
-
-            let inputElement = contenedor.querySelector('input');
-            contenedor.insertBefore(mensajeError, inputElement.nextSibling);
-
-        }else{
+        }
+        else
+        {
             if(respuesta.data.coincidencia){
                 document.getElementById('nuevoEstado').value = 'victoria';
             }else{

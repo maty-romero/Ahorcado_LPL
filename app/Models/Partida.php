@@ -30,8 +30,7 @@ class Partida extends Model
     {
         return $this->belongsToMany(User::class, 'user_partida', 'partida_id', 'user_id');
     }
-
-    // transforma el tiempo en segundos para utilizar el cronometro 
+ 
     public static function getTiempoPartidaCronometro(string $tiempoJugado) : int
     {
         list($horas, $minutos, $segundos) = explode(':', $tiempoJugado);
@@ -48,20 +47,9 @@ class Partida extends Model
     public static function guardarPartida($tiempoInicio, $tiempoFin, $idPartida)
     {
         $partida = Partida::find($idPartida);
-
-        Log::info("Partida encontrada para guardar: " .$partida);
-
         $tiempoTotalAnterior = Partida::getTiempoPartidaCronometro($partida->tiempo_jugado); // tiempo anterior jugado
         // tiempo jugado hasta el momento
         $tiempoTotalNuevo = Partida::getNuevoTiempoJugado($tiempoInicio, $tiempoFin, $tiempoTotalAnterior);
-
-        /*
-        $table->enum('estado', ['victoria', 'interrumpida', 'derrota', 'iniciada']);  
-            $table->integer('oportunidades_restantes')->default(10);  
-            $table->string('letras_ingresadas')->default(''); //acertadas y falladas
-            $table->time('tiempo_jugado'); // modificar formato en Model
-            $table->unsignedBigInteger('palabra_id');
-        */
 
         $partida->update([
             'estado' => session('partida')->estado,
@@ -79,14 +67,12 @@ class Partida extends Model
     */
     public static function obtenerRankingPartidas($dificultad)
     {
-        // Obtener el ID de la dificultad
         $idDificultad = DB::table('dificultad')->where('nombre_dificultad', $dificultad)->value('id');
 
-        // Realizar la consulta para obtener el ranking de las partidas
         $rankingPartidas = Partida::with(['usuarios' => function ($query) {
                 $query->select('users.name');
             }])
-            ->select('id', 'tiempo_jugado') // Seleccionar el tiempo jugado desde el modelo Partida
+            ->select('id', 'tiempo_jugado') 
             ->where('estado', 'victoria')
             ->whereHas('palabra', function ($query) use ($idDificultad) {
                 $query->where('dificultad_id', $idDificultad);
@@ -105,7 +91,7 @@ class Partida extends Model
         $partida->oportunidades_restantes = 10; 
         $partida->letras_ingresadas = '';
         $partida->tiempo_jugado = '00:00:00'; 
-        $partida->palabra_id = $idPalabraDificultad; // palabra con la dificultad elegida
+        $partida->palabra_id = $idPalabraDificultad; // dificultad elegida
         $partida->save();
 
         $userPartida = new UserPartida();

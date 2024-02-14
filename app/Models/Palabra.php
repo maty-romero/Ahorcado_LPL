@@ -49,10 +49,9 @@ class Palabra extends Model
                 $mensaje = "La letra '$caracter' está presente en la palabra. Bien hecho!";
             } else {
                 $mensaje = "La latra '$caracter' no está presente en la palabra. Sigue participando!";
-                // Decrementar las oportunidades restantes
                 session('partida')->oportunidades_restantes--; 
             }
-            // Agregar el carácter ingresado a las letras ingresadas en la sesión
+            
             $letrasIngresadas .= $caracter .", ";
             session('partida')->letras_ingresadas = $letrasIngresadas; 
         }
@@ -67,31 +66,28 @@ class Palabra extends Model
     // True: letras ingresadas suficientes para completar la palabra 
     public static function verificarVictoria($palabra, $letrasIngresadas)
     {
-        // hash con las letras únicas como claves
         $letrasNecesarias = array_flip(array_unique(str_split($palabra))); 
 
-        // Verificacion ingreso palabras
         foreach (str_split($letrasIngresadas) as $letra) {
             if (isset($letrasNecesarias[$letra])) {
-                unset($letrasNecesarias[$letra]); // Eliminar la letra del hash si está presente
+                unset($letrasNecesarias[$letra]); 
             }
         }
-        return empty($letrasNecesarias); // hash vacio: se ha completado la palabra 
+        return empty($letrasNecesarias); // vacio: se ha completado la palabra 
 
     }
 
-    public static function getLetrasNoAcertadas($palabra, $letrasIngresadas)
+    public function getLetrasNoAcertadas($letrasIngresadas)
     {
         $letrasIngresadas = trim($letrasIngresadas);
         $letrasIngresadasArray = explode(',', $letrasIngresadas);
         $letrasIngresadasArray = array_map('trim', $letrasIngresadasArray);
-        $palabraArray = str_split($palabra);
+        $palabraArray = str_split($this->palabra);
         $letrasNoPresentes = array_diff($letrasIngresadasArray, $palabraArray);
         $resultado = implode(', ', $letrasNoPresentes);
         return $resultado;
     }
 
-    
     public function verificarPalabra(string $palabraIngreso){ 
         $format = false; 
         $coincidencia = false; 
@@ -116,21 +112,14 @@ class Palabra extends Model
     }
     public static function getPalabraRandomificultad(string $idDificultad)
     {
-        Log::info("Dificultad GetPalabraRandom " .$idDificultad);
         $palabras = Palabra::where('dificultad_id', $idDificultad)->get();
-        
-        Log::info("Coleccion palabras dificultad " .$idDificultad.": " .$palabras);
 
         $palabraAleatoria = null; 
         if ($palabras->isNotEmpty()) {
             $palabraAleatoria = $palabras->random();
+            return $palabraAleatoria->id;
         }
-        /*
-        // Seleccionar una palabra aleatoria de la lista
-        //$palabraAleatoria = $palabras->random();
-        */
-
-        // Devolver el ID de la palabra seleccionada
-        return $palabraAleatoria->id;
+        return $palabraAleatoria; 
+        
     }
 }

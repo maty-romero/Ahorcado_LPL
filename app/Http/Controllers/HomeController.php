@@ -26,7 +26,6 @@ class HomeController extends Controller
     public function index()
     {
         $estadisticas = Auth::user()->getEstadisticas(); 
-        //dd($estadisticas);
         return view('home', ["estadisticas" => $estadisticas]);
     }
 }

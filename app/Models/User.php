@@ -54,9 +54,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Partida::class, 'user_partida', 'user_id', 'partida_id');
     }
 
+    // Cantidad palabras adivinadas, tiempos min y max por dificultad
     public function getEstadisticas()
     {
-        // Cantidad palabras adivinadas y tiempos min y max por dificultad
         $estadisticas = DB::table('partida as p')
         ->select('d.nombre_dificultad', 
             DB::raw('COUNT(p.id) as cantidad'), 
@@ -67,7 +67,7 @@ class User extends Authenticatable
         ->join('palabra as pal', 'p.palabra_id', '=', 'pal.id')
         ->join('dificultad as d', 'pal.dificultad_id', '=', 'd.id')
         ->where('p.estado', '=', 'victoria')
-        ->where('u.id', '=', $this->id) // Filtro por el ID del usuario autenticado
+        ->where('u.id', '=', $this->id) 
         ->groupBy('d.nombre_dificultad')
         ->get();
 

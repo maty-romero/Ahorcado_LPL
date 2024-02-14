@@ -17,7 +17,7 @@ class PalabraObserver
 
         if (strlen($palabra->palabra) < $minLength || strlen($palabra->palabra) > $maxLength) {
             
-            echo "Error"; 
+            //echo "Error"; 
             //return false; 
             //throw new \Exception('La longitud de la palabra no cumple con los requisitos de la dificultad.');
         }

@@ -5,21 +5,6 @@
 @vite('resources/js/cronometro.js')
 @vite('resources/js/partida.js')
 
-
-
-@php
-    if (!session()->has('partida')) {
-        session()->put('partida', $partida);
-        //echo "Se ha asignado una nueva partida!";
-    }
-    if (!session()->has('hora_inicio_juego')) {
-        $tiempoInicio = time();
-        session()->put('hora_inicio_juego', $tiempoInicio);
-    }
-    
-    //dump(session('partida')); 
-@endphp
-
 <div class="container">
     @php
         echo session('partida')->palabra->palabra; 
@@ -52,22 +37,7 @@
             </div>
             <div class="border-top border-warning">
                 <span class="fw-bold text-warning" style="font-size: 1.8em;">Letras de la palabra:</span>
-                @php
-                    $palabra = session('partida')->palabra->palabra;
-                    $letrasIngresadas = explode(',', session('partida')->letras_ingresadas);
-                @endphp
-
-                <p id='idPalabraEnmascarada' class="font-weight-bold text-warning mt-2" style="font-size: 3.0em;" id="idLetrasPalabra">
-                    {{--
-                    @foreach (str_split($palabra) as $letra)
-                        @if (in_array($letra, $letrasIngresadas))
-                            {{ $letra }}
-                        @else
-                            _
-                        @endif
-                    @endforeach
-                    --}}
-                </p>
+                <p id='idPalabraEnmascarada' class="font-weight-bold text-warning mt-2" style="font-size: 3.0em;" id="idLetrasPalabra"></p>
             </div>
         </div>
     </div>
@@ -78,7 +48,7 @@
     <div class="mt-4 mb-4 text-center pt-3 border border-info">
         <span class="fw-bold text-dark" style="font-size: 1.8em;">Letras no acertadas:</span> 
         @php
-            $letrasNoAcertadas = session('partida')->palabra->getLetrasNoAcertadas($palabra, session('partida')->letras_ingresadas);
+            $letrasNoAcertadas = session('partida')->palabra->getLetrasNoAcertadas(session('partida')->letras_ingresadas);
         @endphp
         <span id="spanLetrasNoAcertadas" class="text-success" style="font-size: 1.8em;">
             {{$letrasNoAcertadas}}

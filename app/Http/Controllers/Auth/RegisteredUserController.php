@@ -37,8 +37,6 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()]
         ]);
 
-        Log::info("Valores de la solicitud: " . json_encode($request->PaisResidencia));
-
         $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
