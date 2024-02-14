@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
             'pais_residencia' => 'Argentina'
         ]);
 
-        // Crear dificultades con reglas específicas
         Dificultad::create(['nombre_dificultad' => 'Baja', 'longitud_minima' => 1, 'longitud_maxima' => 5]);
         Dificultad::create(['nombre_dificultad' => 'Media', 'longitud_minima' => 6, 'longitud_maxima' => 8]);
         Dificultad::create(['nombre_dificultad' => 'Alta', 'longitud_minima' => 9, 'longitud_maxima' => 100]);
@@ -48,7 +47,7 @@ class DatabaseSeeder extends Seeder
         Palabra::create(['palabra' => 'computadora', 'dificultad_id' => 2]);
         Palabra::create(['palabra' => 'telefono', 'dificultad_id' => 2]);
         Palabra::create(['palabra' => 'internet', 'dificultad_id' => 2]);
-        Palabra::create(['palabra' => 'libro', 'dificultad_id' => 2]);
+        Palabra::create(['palabra' => 'botella', 'dificultad_id' => 2]);
         Palabra::create(['palabra' => 'musica', 'dificultad_id' => 2]);
         Palabra::create(['palabra' => 'persona', 'dificultad_id' => 2]);
         Palabra::create(['palabra' => 'tierra', 'dificultad_id' => 2]);
@@ -69,7 +68,6 @@ class DatabaseSeeder extends Seeder
         Palabra::create(['palabra' => 'desesperadamente', 'dificultad_id' => 3]);
 
         User::factory(12)->create();
-        //Palabra::factory(10)->create();
         Partida::factory(10)->create();
         UserPartida::factory(10)->create();
     }

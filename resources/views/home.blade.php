@@ -47,26 +47,32 @@
             <div class="col-md-4 mb-4 d-flex">
                 <div class="bg-info text-light p-4 flex-fill text-center">
                     <h1>Estadísticas personales</h1>
-                    <table id="tablaPartidas" class="table text-center">
-                        <thead class="thead-dark">
-                            <tr class="table-warning">
-                                <th scope="col">Dificultad</th>
-                                <th scope="col">Palabras adivinadas</th>
-                                <th scope="col">Tiempo mínimo</th>
-                                <th scope="col">Tiempo máximo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($estadisticas as $result)
-                                <tr>
-                                    <td>{{ $result->nombre_dificultad }}</td>
-                                    <td>{{ $result->cantidad }}</td>
-                                    <td>{{ $result->tiempo_minimo }}</td>
-                                    <td>{{ $result->tiempo_maximo }}</td>
+
+                    @if (count($estadisticas) >= 1)
+                        <table id="tablaPartidas" class="table text-center">
+                            <thead class="thead-dark">
+                                <tr class="table-warning">
+                                    <th scope="col">Dificultad</th>
+                                    <th scope="col">Palabras adivinadas</th>
+                                    <th scope="col">Tiempo mínimo</th>
+                                    <th scope="col">Tiempo máximo</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($estadisticas as $result)
+                                    <tr>
+                                        <td>{{ $result->nombre_dificultad }}</td>
+                                        <td>{{ $result->cantidad }}</td>
+                                        <td>{{ $result->tiempo_minimo }}</td>
+                                        <td>{{ $result->tiempo_maximo }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>    
+                    @else
+                        <h4>* Aun no tienes victorias * </h4>    
+                    @endif
+                    
                 </div>
             </div>
         </div>

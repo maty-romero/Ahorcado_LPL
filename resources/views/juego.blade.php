@@ -5,6 +5,8 @@
 @vite('resources/js/cronometro.js')
 @vite('resources/js/partida.js')
 
+
+
 @php
     if (!session()->has('partida')) {
         session()->put('partida', $partida);
@@ -14,12 +16,14 @@
         $tiempoInicio = time();
         session()->put('hora_inicio_juego', $tiempoInicio);
     }
-
+    
     //dump(session('partida')); 
 @endphp
 
 <div class="container">
-    
+    @php
+        echo session('partida')->palabra->palabra; 
+    @endphp
     <div class="d-flex justify-content-between mb-4">
         <div>
             <span class="fw-bold text-dark" style="font-size: 1.8em;">Tiempo jugado:</span> 
