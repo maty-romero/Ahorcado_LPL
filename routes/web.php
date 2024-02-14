@@ -11,8 +11,6 @@ require __DIR__ . '/auth.php';
 
 // http://ahorcadoapp.test/
 
-//Auth::routes();
-
 Route::middleware('auth')->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/interrumpidos', [PartidaController::class, 'index_interrumpidos'])->name('index_interrumpidos');
@@ -30,7 +28,7 @@ Route::middleware('auth')->group(function () {
 });
 
 //Logs 
-Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+//Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 
 
 

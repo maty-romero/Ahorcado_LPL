@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Log;
 class Partida extends Model
 {
     use HasFactory, SoftDeletes;
-
     protected $table = 'partida';
     protected $fillable = [
         'estado',

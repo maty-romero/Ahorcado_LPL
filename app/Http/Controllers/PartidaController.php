@@ -18,7 +18,7 @@ class PartidaController extends Controller
 
         try {
             $idPalabraRandom = Palabra::getPalabraRandomificultad($idDificultad);
-            $partida = Partida::crearPartida($idPalabraRandom, Auth::user()->id); // con jugador asociado
+            $partida = Partida::crearPartida($idPalabraRandom, Auth::user()->id); // jugador asociado
 
             $this->inicializarSesion($partida);
 
@@ -87,17 +87,12 @@ class PartidaController extends Controller
         $tiempoInicio = session('hora_inicio_juego'); // comienzo partida
         $tiempoFin = time();
         Partida::guardarPartida($tiempoInicio, $tiempoFin, session('partida')->id);
-        
-        //set Cookie ultima partida 
-        $valorCookie = session('partida')->estado .";". date("d/m/Y");
-        $fechaExpiracion = mktime(date('H'), date('i'), date('s'), date('n'), date('j') + 7, date('Y')); // 7 dias desde fecha actual
-        setcookie(Auth::user()->username); // delete cookie antigua
-        setcookie(Auth::user()->username, $valorCookie, $fechaExpiracion); 
+         
+        $this->setCookieUltimaPartida();
 
         if(session('partida')->estado == 'interrumpida')
         {
-            session()->forget('partida');
-            session()->forget('hora_inicio_juego');
+            $this->finalizarSesion();
             return to_route('home');
         }
 
@@ -106,6 +101,7 @@ class PartidaController extends Controller
         {
             $dificultadPartida = session('partida')->palabra->dificultad->nombre_dificultad; 
             $partidasRanking = Partida::obtenerRankingPartidas($dificultadPartida);
+            $this->finalizarSesion();
         }
         
         return View('resultado', ['partida' => session('partida'), 'partidasRanking' => $partidasRanking]);
@@ -120,5 +116,18 @@ class PartidaController extends Controller
             $tiempoInicio = time();
             session()->put('hora_inicio_juego', $tiempoInicio);
         }
+    }
+    private function finalizarSesion()
+    {
+        // el resto de la session no se borra para mantener el logeo
+        session()->forget('partida');
+        session()->forget('hora_inicio_juego');    
+    }
+    private function setCookieUltimaPartida()
+    {
+        $valorCookie = session('partida')->estado .";". date("d/m/Y");
+        $fechaExpiracion = mktime(date('H'), date('i'), date('s'), date('n'), date('j') + 7, date('Y')); // 7 dias desde fecha actual
+        setcookie(Auth::user()->username); // delete cookie antigua
+        setcookie(Auth::user()->username, $valorCookie, $fechaExpiracion);
     }
 }
