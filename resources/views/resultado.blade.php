@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="container">
-        @if ($partida->estado == 'victoria')
+        @if ($victoria)
             <div class="alert alert-success text-center" role="alert">
                 <h4 class="fw-bold">¡Felicidades! Has ganado.</h4>
             </div>
@@ -11,12 +11,12 @@
             <div class="alert alert-warning text-center" role="alert">
                 <h4 class="fw-bold">¡Derrota!</h4>
                 <h4>¡Ánimo! Sigue intentándolo.</h4>
-                <p class="lead">La palabra a adivinar era: <strong class="fw-bold">{{ $partida->palabra->palabra }}</strong></p>
+                <p class="lead">La palabra a adivinar era: <strong class="fw-bold">{{ $palabra }}</strong></p>
             </div>
 
             @if (!empty($partidasRanking))
                 <div class="container">
-                    <h4>Ranking de jugadores más rápidos - Dificultad: {{$partida->palabra->dificultad->nombre_dificultad}}</h4>
+                    <h4>Ranking de jugadores más rápidos - Dificultad: {{$dificultad}}</h4>
                     <table class="table table-bordered">
                         <thead>
                             <tr class="table-primary">

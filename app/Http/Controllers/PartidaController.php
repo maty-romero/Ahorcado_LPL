@@ -96,17 +96,23 @@ class PartidaController extends Controller
             return to_route('home');
         }
 
-        $partidasRanking = [];
-        if(session('partida')->estado == 'derrota')
-        {
-            $dificultadPartida = session('partida')->palabra->dificultad->nombre_dificultad; 
-            $partidasRanking = Partida::obtenerRankingPartidas($dificultadPartida);
-            $this->finalizarSesion();
-        }
-        
-        //$victoria = session('partida')->estado == 'victoria' ? true : false; 
+        $palabraAdivinar = session('partida')->palabra->palabra;
+        $victoria =  session('partida')->estado == 'victoria'; 
+        $dificultadPartida = session('partida')->palabra->dificultad->nombre_dificultad; 
 
-        return View('resultado', ['partida' => session('partida'), 'partidasRanking' => $partidasRanking]);
+        $partidasRanking = [];
+        if(!$victoria)
+        {
+            $partidasRanking = Partida::obtenerRankingPartidas($dificultadPartida);
+        }
+        $this->finalizarSesion();
+        
+        return View('resultado', [
+            'victoria' => $victoria,
+            'palabra' => $palabraAdivinar, 
+            'dificultad' => $dificultadPartida,
+            'partidasRanking' => $partidasRanking
+        ]);
         
     }
     private function inicializarSesion($partida)
