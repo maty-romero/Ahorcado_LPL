@@ -46,9 +46,9 @@ class Palabra extends Model
         } else {
             $estaEnPalabra = strpos($palabra, $caracter) !== false;
             if ($estaEnPalabra) {
-                $mensaje = "La letra '$caracter' está presente en la palabra. Bien hecho!";
+                $mensaje = "La letra '$caracter' conforma la palabra. Bien hecho!";
             } else {
-                $mensaje = "La latra '$caracter' no está presente en la palabra. Sigue participando!";
+                $mensaje = "La letra '$caracter' no conforma la palabra. Sigue participando!";
                 session('partida')->oportunidades_restantes--; 
             }
             

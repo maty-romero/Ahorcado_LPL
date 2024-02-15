@@ -2,11 +2,6 @@
 
 @section('content')
 
-    @php
-        session()->forget('partida');
-        session()->forget('hora_inicio_juego');
-    @endphp
-
     <div class="container">
         @if ($partida->estado == 'victoria')
             <div class="alert alert-success text-center" role="alert">

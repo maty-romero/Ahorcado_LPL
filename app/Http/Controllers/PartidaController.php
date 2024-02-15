@@ -104,6 +104,8 @@ class PartidaController extends Controller
             $this->finalizarSesion();
         }
         
+        //$victoria = session('partida')->estado == 'victoria' ? true : false; 
+
         return View('resultado', ['partida' => session('partida'), 'partidasRanking' => $partidasRanking]);
         
     }

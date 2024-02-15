@@ -25,35 +25,39 @@
         </div>
     </div>
 
-    <div class="d-flex align-items-start justify-content-center mb-4">
+    <div class="d-flex align-items-start justify-content-center mb-4 ">
         <div class="mr-md-4 mb-3 mb-md-0" style="margin-right: 60px;">
-            <img src="https://play-lh.googleusercontent.com/MDGMJHCm7qwtOw9o8M00ZXVpL-sCTS5z-nVKwveVDsriFmtbSV8eaKYZOfejDyiQJk4=w526-h296-rw" alt="Hangman Image" style="max-width: 100%;">
+            <img src="https://play-lh.googleusercontent.com/MDGMJHCm7qwtOw9o8M00ZXVpL-sCTS5z-nVKwveVDsriFmtbSV8eaKYZOfejDyiQJk4=w526-h296-rw" alt="Hangman Image" style="max-width: 100%; height: 350px">
         </div>
         
-        <div class="text-center border border-secondary p-3" style="width: 550px;">
-            <div class="border-info mb-3">
-                <span class="fw-bold text-info" style="font-size: 1.8em;">Información de la partida:</span> 
-                <p class="font-weight-bold text-info" style="font-size: 1.7em;" id="idMsjPartida"></p>
+        <div class="text-center border border-secondary p-3 rounded bg-dark bg-gradient" style="width: 800px; height: 350px">
+            <div class="border-info mb-3 mh-40">
+                <span class="fw-bold text-info" style="font-size: 1.8em;">Informaci&oacute;n de la partida:</span> 
+                <p class="text-white" style="font-size: 1.7em;" id="idMsjPartida"></p>
             </div>
-            <div class="border-top border-warning">
+            <div class="border-top pt-2 border-danger mh-60">
                 <span class="fw-bold text-warning" style="font-size: 1.8em;">Letras de la palabra:</span>
-                <p id='idPalabraEnmascarada' class="font-weight-bold text-warning mt-2" style="font-size: 3.0em;" id="idLetrasPalabra"></p>
+                <p id='idPalabraEnmascarada' class="text-warning mt-4 " style="font-size: 3.0em;" id="idLetrasPalabra"></p>
             </div>
         </div>
     </div>
+    
+    <div class="row justify-content-center">
+        <div class="mt-4 mb-4 col-md-6 text-center pt-2 pb-2 border border-danger rounded" style="width: 1210px">
+            <span class="fw-bold text-dark" style="font-size: 1.8em;">Letras no acertadas:</span> 
+            @php
+                $letrasNoAcertadas = session('partida')->palabra->getLetrasNoAcertadas(session('partida')->letras_ingresadas);
+            @endphp
+            <span id="spanLetrasNoAcertadas" class="text-success" style="font-size: 1.8em;">
+                {{$letrasNoAcertadas}}
+            </span>
+        </div>
+    </div>
+    
+
     <input type="hidden" id="palabraJuego" value="{{ $partida->palabra->palabra }}">
     <input type="hidden" id="tiempoJugadoInicial" value="{{ $partida->tiempo_jugado }}">
     <input type="hidden" id="letrasIngresadasInicial" value="{{ $partida->letras_ingresadas }}">
-
-    <div class="mt-4 mb-4 text-center pt-3 border border-info">
-        <span class="fw-bold text-dark" style="font-size: 1.8em;">Letras no acertadas:</span> 
-        @php
-            $letrasNoAcertadas = session('partida')->palabra->getLetrasNoAcertadas(session('partida')->letras_ingresadas);
-        @endphp
-        <span id="spanLetrasNoAcertadas" class="text-success" style="font-size: 1.8em;">
-            {{$letrasNoAcertadas}}
-        </span>
-    </div>
 
     {{--Modal Rendirse--}}
     <x-modal>
