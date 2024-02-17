@@ -46,8 +46,8 @@ class Partida extends Model
     public function guardarPartida($tiempoInicio, $tiempoFin)
     {
         DB::transaction(function () use ($tiempoInicio, $tiempoFin) {
-            //$partida = Partida::find($idPartida);
             $tiempoTotalAnterior = Partida::getTiempoPartidaCronometro($this->tiempo_jugado); // tiempo anterior jugado
+            
             // tiempo jugado hasta el momento
             $tiempoTotalNuevo = Partida::getNuevoTiempoJugado($tiempoInicio, $tiempoFin, $tiempoTotalAnterior);
 
@@ -58,7 +58,6 @@ class Partida extends Model
                 'tiempo_jugado' => $tiempoTotalNuevo
             ]);
 
-            // No es necesario llamar a $partida->save() 
             // Laravel deshace automáticamente los cambios en caso de excepción durante la transacción.
         });
     }
