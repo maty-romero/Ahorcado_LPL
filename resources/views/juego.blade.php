@@ -3,8 +3,11 @@
 @section('content')
 
 @vite('resources/js/cronometro.js')
-@vite('resources/js/partida.js')
 
+@vite('resources/js/partida.js')
+{{--
+<script src="{{ asset('js/partida2.js') }}"></script>
+--}}
 <div class="container">
     @php
         echo session('partida')->palabra->palabra; 
@@ -112,13 +115,12 @@
             <button id="btnArriesgar" type="button" class="btn btn-warning">Arriesgar</button>
         </x-slot>
     </x-modal>
-    {{--Script:Funciones.js verificacion igualdad palabra adivinar--}}
 
     <div class="text-center pt-3">
-        <button id="btnIngresarLetra" class="btn btn-primary mr-2" style="font-size: 1.8em;">Ingresar una letra</button>
-        <button id="btnArriesgar" class="btn btn-info mr-2" data-bs-toggle="modal" data-bs-target="#modalArriesgar" style="font-size: 1.8em;">Arriesgar una palabra</button>
-        <button id="btnRendirse" class="btn btn-danger mr-2" data-bs-toggle="modal" data-bs-target="#modalRendirse" style="font-size: 1.8em;">Rendirse</button>
-        <button id="btnInterrumpir" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalInterrumpir" style="font-size: 1.8em;">Interrumpir juego</button>
+        <button id="btnIngresarLetra" type="button" class="btn btn-primary mr-2" style="font-size: 1.8em;">Ingresar una letra</button>
+        <button id="btnArriesgar" type="button" class="btn btn-info mr-2" data-bs-toggle="modal" data-bs-target="#modalArriesgar" style="font-size: 1.8em;">Arriesgar una palabra</button>
+        <button id="btnRendirse" type="button" class="btn btn-danger mr-2" data-bs-toggle="modal" data-bs-target="#modalRendirse" style="font-size: 1.8em;">Rendirse</button>
+        <button id="btnInterrumpir" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalInterrumpir" style="font-size: 1.8em;">Interrumpir juego</button>
     </div>
 </div>
 
