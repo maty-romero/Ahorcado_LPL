@@ -38,7 +38,7 @@ function concluirPartida(partidaId) {
 var btnDeleteAll = document.getElementById('btnEliminarAll');
 
 btnDeleteAll.addEventListener('click', function () {
-    // Realizar la solicitud DELETE
+    
     axios.delete('/eliminarInterrumpidas', {
         headers: {
             'X-CSRF-TOKEN': token
