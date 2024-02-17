@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
 });
 
 //Logs 
-//Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 
 
 

@@ -86,9 +86,10 @@ class PartidaController extends Controller
 
         $tiempoInicio = session('hora_inicio_juego'); // comienzo partida
         $tiempoFin = time();
-        Partida::guardarPartida($tiempoInicio, $tiempoFin, session('partida')->id);
+
+        session('partida')->guardarPartida($tiempoInicio, $tiempoFin);
          
-        $this->setCookieUltimaPartida();
+        $this->setCookieUltimaPartida(session('partida')->estado);
 
         if(session('partida')->estado == 'interrumpida')
         {
@@ -127,13 +128,13 @@ class PartidaController extends Controller
     }
     private function finalizarSesion()
     {
-        // el resto de la session no se borra para mantener el logeo
+        // el resto de la session no se borra para mantener el token autenticacion
         session()->forget('partida');
         session()->forget('hora_inicio_juego');    
     }
-    private function setCookieUltimaPartida()
+    private function setCookieUltimaPartida(string $estadoPartida)
     {
-        $valorCookie = session('partida')->estado .";". date("d/m/Y");
+        $valorCookie = $estadoPartida.";". date("d/m/Y");
         $fechaExpiracion = mktime(date('H'), date('i'), date('s'), date('n'), date('j') + 7, date('Y')); // 7 dias desde fecha actual
         setcookie(Auth::user()->username); // delete cookie antigua
         setcookie(Auth::user()->username, $valorCookie, $fechaExpiracion);

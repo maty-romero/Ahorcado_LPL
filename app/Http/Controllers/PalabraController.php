@@ -9,10 +9,16 @@ class PalabraController extends Controller
 {
     public function evaluaLetra(Request $request)
     {
-        $palabra = strtolower($request->input('palabra'));
+        $palabra = session('partida')->palabra; 
         $caracter = strtolower($request->input('caracter'));
 
-        $resultado = Palabra::evaluarLetra($palabra, $caracter);
+        $resultado = $palabra->evaluarLetra(
+            $caracter, 
+            session('partida')->letras_ingresadas, 
+            session('partida')->oportunidades_restantes
+        );
+        session('partida')->letras_ingresadas = $resultado['letras_ingresadas']; 
+        session('partida')->oportunidades_restantes = $resultado['oportunidades']; 
 
         $resultado['juegoTerminado'] = false;
         
@@ -21,14 +27,15 @@ class PalabraController extends Controller
             session('partida')->estado = 'derrota'; 
         }
 
-        if (Palabra::verificarVictoria($palabra, $resultado['letras_ingresadas'])) {
+        if ($palabra->comprobarPalabraCompleta(session('partida')->letras_ingresadas)) {
             $resultado['juegoTerminado'] = true; 
             session('partida')->estado = 'victoria'; 
         } else {
             $resultado['letras_incorrectas'] = session('partida')->palabra->getLetrasNoAcertadas($resultado['letras_ingresadas']);
         }
 
-        $resultado['estadoPartida'] = session('partida')->estado; 
+        $resultado['estadoPartida'] = session('partida')->estado;
+        $resultado['palabraJuego'] = $palabra->palabra;  
         return response()->json($resultado);
     }
 

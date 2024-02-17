@@ -31,12 +31,9 @@ class Palabra extends Model
         return $this->hasMany(Partida::class);
     }
 
-    public static function evaluarLetra($palabra, $caracter)
+    public function evaluarLetra($caracter, $letrasIngresadas, $oportunidadesRestantes)
     {
         $mensaje = '';
-
-        $letrasIngresadas = session('partida')->letras_ingresadas; 
-        
         $caracterUtf8 = mb_convert_encoding($caracter, 'UTF-8', mb_detect_encoding($caracter));
 
         if (strlen($caracterUtf8) > 1 || !ctype_alpha($caracterUtf8)) {
@@ -44,29 +41,29 @@ class Palabra extends Model
         } elseif (strpos($letrasIngresadas, $caracter) !== false) {
             $mensaje = 'Ya has ingresado esa letra. Ingresa otra!';
         } else {
-            $estaEnPalabra = strpos($palabra, $caracter) !== false;
+
+            $estaEnPalabra = strpos($this->palabra, $caracter) !== false;
             if ($estaEnPalabra) {
                 $mensaje = "La letra '$caracter' conforma la palabra. Bien hecho!";
             } else {
                 $mensaje = "La letra '$caracter' no conforma la palabra. Sigue participando!";
-                session('partida')->oportunidades_restantes--; 
+                $oportunidadesRestantes--; 
             }
             
             $letrasIngresadas .= $caracter .", ";
-            session('partida')->letras_ingresadas = $letrasIngresadas; 
         }
-
+        
         return [   
             'mensaje' => $mensaje,
-            'letras_ingresadas' => session('partida')->letras_ingresadas,
-            'oportunidades' => session('partida')->oportunidades_restantes
+            'letras_ingresadas' => $letrasIngresadas,
+            'oportunidades' => $oportunidadesRestantes
         ];
     }
 
     // True: letras ingresadas suficientes para completar la palabra 
-    public static function verificarVictoria($palabra, $letrasIngresadas)
+    public function comprobarPalabraCompleta($letrasIngresadas)
     {
-        $letrasNecesarias = array_flip(array_unique(str_split($palabra))); 
+        $letrasNecesarias = array_flip(array_unique(str_split($this->palabra))); 
 
         foreach (str_split($letrasIngresadas) as $letra) {
             if (isset($letrasNecesarias[$letra])) {

@@ -31,13 +31,12 @@ btnIngresarLetra.addEventListener('click', async () => {
     try {
         // Esperar la pulsación de una tecla
         const teclaPresionada = await esperarTecla();
-        const palabraJuego = document.getElementById('palabraJuego').value;
-        console.log("Palabra: " + palabraJuego +"\nCaracter: " + teclaPresionada);
+        //const palabraJuego = document.getElementById('palabraJuego').value;
+        //console.log("Palabra: " + palabraJuego +"\nCaracter: " + teclaPresionada);
         
         // Peticion Ajax con Axios, incluyendo el token CSRF en los datos
          
-        const respuesta = await axios.post('/evaluarLetra', {
-            palabra: palabraJuego, 
+        const respuesta = await axios.post('/evaluarLetra', { 
             caracter: teclaPresionada
         }, {
             headers: {
@@ -62,7 +61,7 @@ btnIngresarLetra.addEventListener('click', async () => {
             document.getElementById('formFinalizarPartida').submit(); 
         }
         
-        actualizarPalabraEnmascarada(palabraJuego, respuesta.data.letras_ingresadas)
+        actualizarPalabraEnmascarada(respuesta.data.palabraJuego, respuesta.data.letras_ingresadas)
         habilitarBotones();
 
     } catch (error) {

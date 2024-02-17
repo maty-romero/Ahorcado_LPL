@@ -43,21 +43,24 @@ class Partida extends Model
         return $tiempoTotalFormateado;
     }
 
-    public static function guardarPartida($tiempoInicio, $tiempoFin, $idPartida)
+    public function guardarPartida($tiempoInicio, $tiempoFin)
     {
-        $partida = Partida::find($idPartida);
-        $tiempoTotalAnterior = Partida::getTiempoPartidaCronometro($partida->tiempo_jugado); // tiempo anterior jugado
-        // tiempo jugado hasta el momento
-        $tiempoTotalNuevo = Partida::getNuevoTiempoJugado($tiempoInicio, $tiempoFin, $tiempoTotalAnterior);
+        DB::transaction(function () use ($tiempoInicio, $tiempoFin) {
+            //$partida = Partida::find($idPartida);
+            $tiempoTotalAnterior = Partida::getTiempoPartidaCronometro($this->tiempo_jugado); // tiempo anterior jugado
+            // tiempo jugado hasta el momento
+            $tiempoTotalNuevo = Partida::getNuevoTiempoJugado($tiempoInicio, $tiempoFin, $tiempoTotalAnterior);
 
-        $partida->update([
-            'estado' => session('partida')->estado,
-            'oportunidades_restantes' => session('partida')->oportunidades_restantes,
-            'letras_ingresadas' => session('partida')->letras_ingresadas,
-            'tiempo_jugado' => $tiempoTotalNuevo
-        ]);
-        $partida->save();
+            $this->update([
+                'estado' => $this->estado,
+                'oportunidades_restantes' => $this->oportunidades_restantes,
+                'letras_ingresadas' => $this->letras_ingresadas,
+                'tiempo_jugado' => $tiempoTotalNuevo
+            ]);
 
+            // No es necesario llamar a $partida->save() 
+            // Laravel deshace automáticamente los cambios en caso de excepción durante la transacción.
+        });
     }
 
     /*
@@ -85,19 +88,22 @@ class Partida extends Model
 
     public static function crearPartida(string $idPalabraDificultad, string $idJugador)
     {
-        $partida = new Partida();
-        $partida->estado = 'iniciada'; 
-        $partida->oportunidades_restantes = 10; 
-        $partida->letras_ingresadas = '';
-        $partida->tiempo_jugado = '00:00:00'; 
-        $partida->palabra_id = $idPalabraDificultad; // dificultad elegida
-        $partida->save();
-
-        $userPartida = new UserPartida();
-        $userPartida->user_id = $idJugador; 
-        $userPartida->partida_id = $partida->id;
-        $userPartida->save();
-        
-        return $partida; 
+        return DB::transaction(function () use ($idPalabraDificultad, $idJugador) {
+            $partida = new Partida();
+            $partida->estado = 'iniciada'; 
+            $partida->oportunidades_restantes = 10; 
+            $partida->letras_ingresadas = '';
+            $partida->tiempo_jugado = '00:00:00'; 
+            $partida->palabra_id = $idPalabraDificultad; // dificultad elegida
+            $partida->save();
+    
+            $userPartida = new UserPartida();
+            $userPartida->user_id = $idJugador; 
+            $userPartida->partida_id = $partida->id;
+            $userPartida->save();
+            
+            return $partida; 
+        });
+        // Laravel deshace automáticamente los cambios en caso de excepción durante la transacción.
     }
 }
