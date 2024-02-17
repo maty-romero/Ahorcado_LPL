@@ -31,10 +31,6 @@ btnIngresarLetra.addEventListener('click', async () => {
     try {
         // Esperar la pulsación de una tecla
         const teclaPresionada = await esperarTecla();
-        //const palabraJuego = document.getElementById('palabraJuego').value;
-        //console.log("Palabra: " + palabraJuego +"\nCaracter: " + teclaPresionada);
-        
-        // Peticion Ajax con Axios, incluyendo el token CSRF en los datos
          
         const respuesta = await axios.post('/evaluarLetra', { 
             caracter: teclaPresionada
@@ -44,8 +40,7 @@ btnIngresarLetra.addEventListener('click', async () => {
             }
         });
         
-        // Manejar la respuesta
-        console.log(respuesta.data);
+        // Respuesta exitosa
         
         msjPartida.textContent = ""; 
         msjPartida.textContent = respuesta.data.mensaje;
@@ -55,7 +50,6 @@ btnIngresarLetra.addEventListener('click', async () => {
 
         if(respuesta.data.juegoTerminado)
         {
-            console.log("Ha terminado la partida!!! -- Accionar Modal resultado");
             let nuevoEstado = respuesta.data.estadoPartida;
             document.getElementById('nuevoEstado').value = nuevoEstado;
             document.getElementById('formFinalizarPartida').submit(); 
@@ -70,7 +64,6 @@ btnIngresarLetra.addEventListener('click', async () => {
     }
 });
 
-// Función para esperar la pulsación de una tecla
 function esperarTecla() {
     return new Promise(resolve => {
         document.addEventListener('keydown', function(event) {
@@ -81,7 +74,6 @@ function esperarTecla() {
     });
 }
 
-// export para incluir dentro de blade 
 function actualizarPalabraEnmascarada(palabra, letrasIngresadas) {
     let contenedorPalabra = document.getElementById('idPalabraEnmascarada');
     contenedorPalabra.textContent = ""; 
@@ -104,7 +96,6 @@ btnArriesgar.addEventListener('click', async () => {
     
     try {
         let palabraIngresada = document.getElementById('txtPalabraArriesgar').value;
-        //const palabraJuego = document.getElementById('palabraJuego').value;
         
         // Peticion Ajax con Axios, incluyendo el token CSRF en los datos
          
@@ -116,8 +107,7 @@ btnArriesgar.addEventListener('click', async () => {
             }
         });
         
-        // Manejar la respuesta
-        console.log(respuesta.data);
+        // Respuesta exitosa
 
         if(!respuesta.data.format)
         {
@@ -149,7 +139,6 @@ btnArriesgar.addEventListener('click', async () => {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Tu código aquí se ejecutará cuando se cargue el DOM
     const palabraJuego = document.getElementById('palabraJuego').value;
     const letrasIngresadas = document.getElementById('letrasIngresadasInicial').value;
 

@@ -14,7 +14,7 @@ botonesFinalizar.forEach(function (boton) {
 
 function concluirPartida(partidaId) {
 
-    // Realizar la solicitud AJAX para eliminar la partida
+    // Solicitud AJAX para eliminar la partida
     axios.delete('/eliminarPartida', {
         data: { partidaId: partidaId },
         headers: {
@@ -23,7 +23,6 @@ function concluirPartida(partidaId) {
     })
         .then(function (response) {
             // Manejar la respuesta de la solicitud exitosa
-            console.log(response.data);
 
             // Eliminar la fila de la tabla
             var fila = document.querySelector('tr[data-partida-id="' + partidaId + '"]');
@@ -32,7 +31,6 @@ function concluirPartida(partidaId) {
             }
         })
         .catch(function (error) {
-            // Manejar errores de la solicitud
             console.error('Error al eliminar la partida:', error);
         });
 }
@@ -48,7 +46,6 @@ btnDeleteAll.addEventListener('click', function () {
     })
         .then(function (response) {
             // Manejar la respuesta de la solicitud exitosa
-            console.log(response.data);
 
             var tablaPartidas = document.getElementById('tablaPartidas');
             if (tablaPartidas) {

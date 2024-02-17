@@ -3,15 +3,10 @@
 @section('content')
 
 @vite('resources/js/cronometro.js')
-
 @vite('resources/js/partida.js')
-{{--
-<script src="{{ asset('js/partida2.js') }}"></script>
---}}
+
 <div class="container">
-    @php
-        echo session('partida')->palabra->palabra; 
-    @endphp
+    
     <div class="d-flex justify-content-between mb-4">
         <div>
             <span class="fw-bold text-dark" style="font-size: 1.8em;">Tiempo jugado:</span> 
